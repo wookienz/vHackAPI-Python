@@ -3,11 +3,8 @@ from utils import Utils
 
 
 class Update:
-
-    ut = Utils()
-
     def getTasks(self):
-        temp =self.ut.requestString("user::::pass::::uhash",
+        temp = self.ut.requestString("user::::pass::::uhash",
                                 self.api.getUsername() + "::::" + self.api.getPassword() + "::::" + "userHash_not_needed",
                                 "vh_tasks.php")
         return temp
@@ -37,27 +34,15 @@ class Update:
         return n
 
     def startTask(self, type):
-        temp =self.ut.requestString("user::::pass::::uhash::::utype",
+        temp = self.ut.requestString("user::::pass::::uhash::::utype",
                                 self.api.getUsername() + "::::" + self.api.getPassword() + "::::" + "userHash_not_needed" + "::::" + type,
                                 "vh_addUpdate.php")
         if "result" in temp:
             return temp.split('result":"')[1].split('"')[0]
         return "2"
 
-    def botnetInfo(self):
-        temp =self.ut.requestString("user::::pass::::uhash",
-                                self.api.getUsername() + "::::" + self.api.getPassword() + "::::" + "userHash_not_needed",
-                                "vh_botnetInfo.php")
-        return temp
-
-    def upgradeBotnet(self, ID):
-        temp =self.ut.requestString("user::::pass::::uhash::::bID",
-                                self.api.getUsername() + "::::" + self.api.getPassword() + "::::" + "userHash_not_needed" + "::::" + ID,
-                                "vh_upgradeBotnet.php")
-        return temp
-
     def finishTask(self, taskID):
-        temp =self.ut.requestString("user::::pass::::uhash::::taskid",
+        temp = self.ut.requestString("user::::pass::::uhash::::taskid",
                                 self.api.getUsername() + "::::" + self.api.getPassword() + "::::" + "userHash_not_needed" + "::::" + taskID,
                                 "vh_finishTask.php")
         if "4" in temp:
@@ -66,7 +51,7 @@ class Update:
             return False
 
     def finishAll(self):
-        temp =self.ut.requestString("user::::pass::::uhash",
+        temp = self.ut.requestString("user::::pass::::uhash",
                                 self.api.getUsername() + "::::" + self.api.getPassword() + "::::" + "userHash_not_needed",
                                 "vh_finishAll.php")
         if "0" in temp:
@@ -75,7 +60,7 @@ class Update:
             return False
 
     def useBooster(self):
-        temp =self.ut.requestString("user::::pass::::uhash::::boost",
+        temp = self.ut.requestString("user::::pass::::uhash::::boost",
                                 self.api.getUsername() + "::::" + self.api.getPassword() + "::::" + "userHash_not_needed" + "::::" + "1",
                                 "vh_tasks.php")
         return temp
