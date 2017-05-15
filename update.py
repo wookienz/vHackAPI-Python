@@ -2,6 +2,9 @@ from utils import Utils
 
 
 class Update:
+
+    ut = Utils()
+
     def getTasks(self):
         temp = self.ut.requestString("user::::pass::::uhash",
                                 self.api.getUsername() + "::::" + self.api.getPassword() + "::::" + "userHash_not_needed",
