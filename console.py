@@ -473,7 +473,7 @@ class Console:
             return False
 
     def attackIP2(self, ip, max):
-        o = OCR(False)
+        o = OCR()
         imgs = self.requestPassword(ip)
         selection = o.getPassword(imgs)
         print selection
