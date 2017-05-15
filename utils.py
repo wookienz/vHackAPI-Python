@@ -1,17 +1,24 @@
 #!/usr/bin/python2.7
 # -*- coding: utf-8
-
-import base64
-import commands
-import hashlib
 import sys
+import json
+import ocr
+import config
+import base64
+import hashlib
 import time
 import urllib2
-from classes import Passwords
 import random
-
+import logging
 
 class Utils:
+
+    def __init__(self):
+        self.secret = config.secret
+        self.url = config.baseurl
+        self.username = config.user
+        self.password = config.password
+
     def getTime(self):
         return int(round(time.time()))
 
@@ -64,14 +71,19 @@ class Utils:
     def requestString(self, format, data, php):
         time.sleep(random.randint(1, 2))
         r = None
+        count = 0
         while r == None:
             try:
                 r = urllib2.urlopen(self.generateURL(format, data, php))
                 t = r.read()
+                return t
             except Exception as err:
-                print "network error, trying again"
-                time.sleep(1)
-        return r
+                count += 1
+                logging.info("network error, trying again. Count: {0}".format(count))
+                time.sleep(3)
+                if count == 10:
+                    logging.warn("Network errors - Giving up")
+                    sys.exit()
 
     def requestStringNoWait(self, format, data, php):
         for i1 in range(0, 10):
@@ -94,6 +106,152 @@ class Utils:
         else:
             return []
 
-    def __init__(self):
-        self.secret = "aeffI"
-        self.url = "https://api.vhack.cc/v/7/"
+    def upgradebot(self, id):
+        """
+        Supplied with a bot net computer ID, upgrade the computer.
+        :param id: bot net computer id
+        :return: str
+        containing: {"money":"3479746","old":"13","costs":"4100000","lvl":"41","mm":"7579746","new":"42","strength":"42"}
+        """
+        response = self.requestString("user::::pass::::uhash::::bID",
+                              self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + str(id),
+                              "vh_upgradeBotnet.php")
+        return response
+
+    def botnetserverinfo(self):
+        """
+        return botnet info including if you can attack vHack servers and bot net pcs info.
+        :return:
+        """
+        response = self.requestString("user::::pass::::uhash",
+                 self.username + "::::" + self.password + "::::" + "userHash_not_needed",
+                 "vh_botnetInfo.php")
+        return response
+
+    def attackbotnetserver(self, i):
+        """
+        Attack vHack servers
+        :return: string
+        """
+        response = self.requestString("user::::pass::::uhash::::cID",
+                                self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + "1",
+                                "vh_attackCompany.php")
+        temp = self.requestString("user::::pass::::uhash::::cID",
+                                     self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + "2",
+                                     "vh_attackCompany2.php")
+        temp = self.requestString("user::::pass::::uhash::::cID",
+                                     self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + "3",
+                                     "vh_attackCompany3.php")
+        """temp = self.requestString("user::::pass::::uhash::::cID",
+                                  self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + "4",
+                                     "vh_attackCompany4.php")"""
+        return response
+
+    def myinfo(self):
+        """
+        looks up and returns all data associated with player. Upgrades, moneym boosters, spyware active etc.
+        See player class for detailed description
+        :return: str
+        """
+        temp = self.requestString("user::::pass::::gcm::::uhash",
+                                     self.username + "::::" + self.password + "::::" + "eW7lxzLY9bE:APA91bEO2sZd6aibQerL3Uy-wSp3gM7zLs93Xwoj4zIhnyNO8FLyfcODkIRC1dc7kkDymiWxy_dTQ-bXxUUPIhN6jCUBVvGqoNXkeHhRvEtqAtFuYJbknovB_0gItoXiTev7Lc5LJgP2" + "::::" + "userHash_not_needed",
+                                     "vh_update.php")
+        return temp
+
+    def removespyware(self):
+        arr = self.requestArray("user::::pass::::uhash:::::",
+                              self.username + "::::" + self.password + "::::" + "UserHash_not_needed" + ":::::",
+                              "vh_removeSpyware.php")
+        return arr
+
+    def gettargets(self, hash):
+        """
+        Initial scan of 6 hosts. It appears as an image. Return image for processing.
+        :return: str
+        """
+        temp = self.requestString("user::::pass::::uhash::::by",
+                                    self.username + "::::" + self.password + "::::" + str(
+                                        hash) + "::::" + str(random.randint(0, 1)), "vh_getImg.php")
+        return temp
+
+    def scantarget(self, uhash, hostname):
+        """
+        Given a hash and hostname, scan target to get ip and vuln
+        '{"hostname":"XT-VRAV7Z5.vHack.cc","ipaddress":"76.179.249.20","vuln":"1"}'
+        :param uhash:
+        :param hostname: hostname of the target "X7-H41995C.vHack.cc"
+        :return: tgt data
+        """
+        temp = self.requestString("user::::pass::::uhash::::hostname",
+                                                     self.username + "::::" + self.password + "::::" + str(
+                                                         uhash) + "::::" + str(hostname), "vh_scanHost.php")
+        return temp
+
+    def gethash(self):
+        """
+        Return up to date hash
+        :return: str
+        """
+        response = self.myinfo()
+        try:
+            uhash = json.loads(response)
+            h = uhash['hash']
+            return h
+        except TypeError:
+            print "Blocked"
+            return False
+
+    def connectToRemoteHost(self, ip):
+        """
+        Load remote data of the host. String containing image and,
+        "p1":6834,"p2":28181,"p3":14601,"p4":1559,"p5":52543,"p6":54969,"fw":347,"av":318,"spam":325,"sdk":283,
+        "ipsp":296,"money":33210055,"savings":"0","anonymous":"NO","username":"153.98.35.119","winelo":0,"winchance":90,
+        "spyware":"276","ipaddress":"153.98.35.119","cmember":"0"}'
+        :return:
+        """
+        uhash = self.gethash()
+        temp = self.requestString("user::::pass::::uhash::::target",
+                                     self.username + "::::" + self.password + "::::" + str(
+                                         uhash) + "::::" + ip, "vh_loadRemoteData.php")
+        return temp
+
+    def findportnumber(self, img):
+        """
+        Given an image or the port number, covert to str.
+        :param img: base64 image
+        :return: str
+        """
+        o = ocr.OCR()
+        return o.getSolution(img)
+
+    def transferTrojan(self, passwd, target, uhash):
+        """
+
+        :param passwd:
+        :param target:
+        :param uhash:
+        :return:
+         '{"result":"0","amount":4877810,"elo":2955,"eloch":1,"newmoney":5468422}'
+        """
+        temp = self.requestString("user::::pass::::port::::target::::uhash",
+                                     self.username + "::::" + self.password + "::::" + str(
+                                         passwd[1]) + "::::" + str(target) + "::::" + str(uhash),
+                                     "vh_trTransfer.php")
+        if temp == "10":
+            return False
+        else:
+            return temp
+
+    def notepadIPs(self):
+        """
+        Retrieve IPs save on the notepad.
+        :return: list
+        """
+        uhash = self.gethash()
+        temp = self.requestString("user::::pass::::uhash",
+                                     self.username + "::::" + self.password + "::::" +
+                                  str(uhash), "vh_getNotepadData.php")
+        j = json.loads(temp)
+        ips = j['pad'].split('\n')
+        logging.info("Saved IPs from Notepad: {0}".format(ips))
+        return ips
