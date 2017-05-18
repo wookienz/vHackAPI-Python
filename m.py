@@ -1,13 +1,10 @@
 import logging
-logging.basicConfig(filename='vhack.log', level=logging.WARN)
 
 from player import Player
 from c import Console
 from botnet import Botnet
 import time
 import locale
-import os
-import sys
 
 locale.setlocale(locale.LC_ALL, '')
 
@@ -15,6 +12,7 @@ a = Console()
 p = Player()
 bot = Botnet()
 
+logging.basicConfig(filename='/home/scott/Projects/Coding/vHackAPI-Python/vhack.log', level=logging.INFO)
 logging.info("...............Starting Up...............")
 logging.info("Player money: {0}".format(p.money))
 

@@ -19,7 +19,7 @@ class Player:
         self.remotespyware = ''
         self.email = 0
         self.savedIPs = []
-        self.init()
+        self.init() # 10 secs
 
     def __repr__(self):
         return "Money: {0}, Score: {1}".format(self.money, self.score)
@@ -27,13 +27,13 @@ class Player:
     def getplayerinfo(self):
         pass
 
-    def updatemoney(self, amount):
+    def setmoney(self, amount):
         """
         Change class money value, pass in neg or postive values
         :param amount:
         :return:
         """
-        self.money = self.money + int(amount)
+        self.money = amount
 
     def getmoney(self):
         return self.money
@@ -56,7 +56,7 @@ class Player:
         """
         data = self.ut.myinfo()
         j = json.loads(data)
-        self.updatemoney(j['money'])
+        self.setmoney(j['money'])
         self.ip = j['ip']
         self.score = j['score']
         self.netcoins = j['netcoins']

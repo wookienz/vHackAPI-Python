@@ -10,6 +10,7 @@ from utils import Utils
 import logging
 import config
 import locale
+import logging
 
 
 class Console:
@@ -24,7 +25,7 @@ class Console:
         self.winchance = config.winchance
 
     def attack(self, ip=None):
-        # # logging.info("Attacking....")
+        logging.info("Attacking....")
         h = self.ut.gethash()
         if h:
             if ip:
@@ -35,7 +36,7 @@ class Console:
                 # process list of 6 items. each containing 'hostname' and 'img' keys
                 results = self.processtargets(j['data'])
                 for i in results:
-                    time.sleep(5)
+                    time.sleep(3)
                     self.attackhostname(i['Hostname'])
 
     def attackhostname(self, hostname):
@@ -45,13 +46,13 @@ class Console:
         :return:
         """
         uhash = self.ut.gethash()
-        # # logging.info('Attacking host {0}'.format(hostname))
+        logging.info('Attacking host {0}'.format(hostname))
         ip = self.hostnameToIP(uhash, hostname)
         self.tgt.changevalue(hostname, ip=ip)
         self.attackip(ip)
 
     def attackip(self, ip):
-        # # logging.info('Attacking target with ip: {0}'.format(ip))
+        logging.info('Attacking target with ip: {0}'.format(ip))
         uhash = self.ut.gethash()
         time.sleep(2)
         r = self.ut.connectToRemoteHost(ip)
@@ -59,20 +60,25 @@ class Console:
         j = json.loads(r)
         if self.attackdecision(j):
             attackport = self.ut.findportnumber(r)
-            # logging.info('Finding Attack Port {0}'.format(attackport))
+            logging.info('Finding Attack Port {0}'.format(attackport))
             time.sleep(2)
-            # logging.info('Sending Trojan...')
+            logging.info('Sending Trojan...')
             result = self.ut.transferTrojan(attackport, ip, uhash)
-            j = json.loads(result)
-            try:
-                pass
-                # logging.info('managed to steal {0}'.format(locale.currency(j['amount'])))
-            except Exception as e:
-                pass  # '{"result":"0","amount":4877810,"elo":2955,"eloch":1,"newmoney":5468422}'
-                # self.tgt.removetarget(hostname, ip)
+            if result:
+                j = json.loads(result)
+                try:
+                    logging.info('managed to steal {0}, Rep gained: {1}'.format(locale.currency(j['amount']), j['eloch']))
+                except Exception as e:
+                    pass  # '{"result":"0","amount":4877810,"elo":2955,"eloch":1,"newmoney":5468422}'
+                    # self.tgt.removetarget(hostname, ip)
+            else:
+                logging.info('IP cant be attacket yet, timer active')
+
 
     def attackdecision(self, data):
-        if int(data['winchance']) >= self.winchance:
+        if '???' is data['winchance']:
+            return False
+        elif int(data['winchance']) >= self.winchance:
             return True
         else:
             return False

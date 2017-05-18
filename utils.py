@@ -80,7 +80,7 @@ class Utils:
             except Exception as err:
                 count += 1
                 logging.info("network error, trying again. Count: {0}".format(count))
-                time.sleep(3)
+                time.sleep(count)
                 if count == 10:
                     logging.warn("Network errors - Giving up")
                     sys.exit()
@@ -198,7 +198,7 @@ class Utils:
             h = uhash['hash']
             return h
         except TypeError:
-            print "Blocked"
+            logging.info("Getting hash blocked")
             return False
 
     def connectToRemoteHost(self, ip):
@@ -237,7 +237,8 @@ class Utils:
                                      self.username + "::::" + self.password + "::::" + str(
                                          passwd[1]) + "::::" + str(target) + "::::" + str(uhash),
                                      "vh_trTransfer.php")
-        if temp == "10":
+        if 'time' in temp:
+            logging.info("{0} under protection: {1}".format(str(target), temp))
             return False
         else:
             return temp

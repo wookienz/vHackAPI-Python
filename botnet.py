@@ -11,7 +11,6 @@ import logging
 class Botnet:
     ut = Utils()
 
-
     def __init__(self):
         self.username = config.user
         self.password = config.password
@@ -83,11 +82,12 @@ class Botnet:
         Check if vHack server botnet is attackable, then attack if can.
         :return: none
         """
-        logging.info("Trying Bot Net")
+        # logging.info("Trying Bot Net")
         if self._attackable():
             self._attackall()
         else:
-            logging.info("Botnet not hackable as yet")
+            pass
+            # logging.info("Botnet not hackable as yet")
 
     def upgradebotnet(self):
         """
@@ -97,9 +97,10 @@ class Botnet:
         logging.info("Attempting to upgrade bot net PC's")
         for i in self.botnet:
             if i.botupgradable():
-                while self.p.getmoney() > i.nextlevelcost():
-                    i.upgradesinglebot()
-                    self.p.updatemoney(i.nextlevelcost() * -1)
+                while int(self.p.getmoney()) > int(i.nextlevelcost()):
+                    new_bal = i.upgradesinglebot()
+                    if new_bal is not None:
+                        self.p.setmoney(new_bal)
 
     def _botnetInfo(self):
         """
@@ -147,12 +148,20 @@ class Bot:
     def upgradesinglebot(self):
         """
         Pass in bot class object and call upgrade function based on bot ID.
+        details :
+        {u'strength': u'22', u'old': u'30', u'mm': u'68359859', u'money': u'66259859', u'costs': u'2100000', u'lvl': u'21', u'new': u'22'}
+        current lvl, bot number, x, x, upgrade cost, lvl, next lvl
         :return: None
         """
         response = self.ut.upgradebot(self.id)
         details = json.loads(response)
-        self.upgradecost += 100000
+        self.upgradecost = details['costs']
         logging.info("Bot # {0} upgraded to level {1} at a cost of {2}".format(details['old'], details['lvl'], details['costs']))
+        try:
+            return details['money']
+        except TypeError as e:
+            logging.info( "Error in upgradesinglebot: {0}".format(e))
+            return None
 
     def __repr__(self):
         return "Bot details: id: {0}, Level: {1}, Next Cost: {2}".format(self.id, self.lvl, self.upgradecost)
