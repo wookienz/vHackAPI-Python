@@ -1,25 +1,24 @@
-#!/usr/bin/python2.7
-# -*- coding: utf-8
-
 import logging
+logging.basicConfig(filename='vhack.log', level=logging.WARN)
+
 from player import Player
 from c import Console
 from botnet import Botnet
 import time
-
-import config
 import locale
+import os
+import sys
 
-logging.basicConfig(filename='vhack.log', level=logging.DEBUG)
 locale.setlocale(locale.LC_ALL, '')
+
 a = Console()
-# p = Player()
+p = Player()
 bot = Botnet()
 
-logging.info("Starting Up")
+logging.info("...............Starting Up...............")
+logging.info("Player money: {0}".format(p.money))
 
 while True:
-    # logging.info(p)
     bot.attack()
     time.sleep(3)
     bot.upgradebotnet()
@@ -27,4 +26,3 @@ while True:
     a.attack()
     for i in p.savedIPs:
         a.attack(i)
-

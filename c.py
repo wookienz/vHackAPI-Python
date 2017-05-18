@@ -24,11 +24,11 @@ class Console:
         self.winchance = config.winchance
 
     def attack(self, ip=None):
-        logging.info("Trying to attack")
+        # # logging.info("Attacking....")
         h = self.ut.gethash()
         if h:
             if ip:
-                self.attackIP(h, ip)
+                self.attackip(ip)
             else:
                 r = self.gettargets(h)
                 j = json.loads(r)
@@ -36,34 +36,46 @@ class Console:
                 results = self.processtargets(j['data'])
                 for i in results:
                     time.sleep(5)
-                    self.attackIP(h, i['Hostname'])
+                    self.attackhostname(i['Hostname'])
 
-    def attackIP(self, uhash, hostname):
+    def attackhostname(self, hostname):
         """
         Scan, get port, attack
-        :param uhash:
         :param hostname:
         :return:
         """
-        logging.info('Attacking host {0}'.format(hostname))
+        uhash = self.ut.gethash()
+        # # logging.info('Attacking host {0}'.format(hostname))
         ip = self.hostnameToIP(uhash, hostname)
         self.tgt.changevalue(hostname, ip=ip)
+        self.attackip(ip)
+
+    def attackip(self, ip):
+        # # logging.info('Attacking target with ip: {0}'.format(ip))
+        uhash = self.ut.gethash()
         time.sleep(2)
         r = self.ut.connectToRemoteHost(ip)
         time.sleep(2)
         j = json.loads(r)
-        if int(j['winchance']) >= self.winchance:
+        if self.attackdecision(j):
             attackport = self.ut.findportnumber(r)
-            logging.info('Finding Attack Port {0}'.format(attackport))
+            # logging.info('Finding Attack Port {0}'.format(attackport))
             time.sleep(2)
-            logging.info('Sending Trojan...')
+            # logging.info('Sending Trojan...')
             result = self.ut.transferTrojan(attackport, ip, uhash)
             j = json.loads(result)
             try:
-                logging.info('managed to steal {0}'.format(locale.currency(j['amount'])))
+                pass
+                # logging.info('managed to steal {0}'.format(locale.currency(j['amount'])))
             except Exception as e:
-                pass                # '{"result":"0","amount":4877810,"elo":2955,"eloch":1,"newmoney":5468422}'
-        # self.tgt.removetarget(hostname, ip)
+                pass  # '{"result":"0","amount":4877810,"elo":2955,"eloch":1,"newmoney":5468422}'
+                # self.tgt.removetarget(hostname, ip)
+
+    def attackdecision(self, data):
+        if int(data['winchance']) >= self.winchance:
+            return True
+        else:
+            return False
 
     def gettargets(self, uhash):
         """
@@ -120,7 +132,7 @@ class Console:
             return None
 
     def localhostattack(self):
-        self.attackIP('127.0.0.1')
+        self.attackhostname('127.0.0.1')
         self.p.refreshinfo()
         self.p.readmail()
 

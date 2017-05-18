@@ -7,9 +7,10 @@ import json
 from player import Player
 import logging
 
+
 class Botnet:
     ut = Utils()
-    p = Player()
+
 
     def __init__(self):
         self.username = config.user
@@ -17,6 +18,7 @@ class Botnet:
         self.botNetServers = config.botNetServers
         self.botnet = []
         self._initbot()
+        self.p = Player()
 
     def _initbot(self):
         """

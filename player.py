@@ -17,9 +17,9 @@ class Player:
         self.rank = ''
         self.localspyware = ''
         self.remotespyware = ''
-        self.init()
         self.email = 0
         self.savedIPs = []
+        self.init()
 
     def __repr__(self):
         return "Money: {0}, Score: {1}".format(self.money, self.score)

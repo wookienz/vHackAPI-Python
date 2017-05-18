@@ -253,5 +253,5 @@ class Utils:
                                   str(uhash), "vh_getNotepadData.php")
         j = json.loads(temp)
         ips = j['pad'].split('\n')
-        logging.info("Saved IPs from Notepad: {0}".format(ips))
+        # logging.info("Saved IPs from Notepad: {0}".format(ips))
         return ips
