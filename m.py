@@ -7,7 +7,7 @@ import locale
 # 8seconds to import
 
 locale.setlocale(locale.LC_ALL, '')
-logging.basicConfig(filename='/home/scott/Projects/Coding/vHackAPI-Python/vhack.log', level=logging.INFO)
+logging.basicConfig(filename='vhack.log', level=logging.INFO)
 logging.info("...............Starting Up...............")
 
 a = Console()
