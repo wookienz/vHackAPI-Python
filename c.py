@@ -23,6 +23,7 @@ class Console:
 
     def __init__(self):
         self.winchance = config.winchance
+        self.anon_attack = config.anon
 
     def attack(self, ip=None):
         logging.info("Attacking....")
@@ -76,6 +77,8 @@ class Console:
 
 
     def attackdecision(self, data):
+        if self.anon_attack and data['anonymous'] is "No":
+            return False
         if '???' is data['winchance']:
             return False
         elif int(data['winchance']) >= self.winchance:

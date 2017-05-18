@@ -4,20 +4,18 @@
 from utils import Utils
 import config
 import json
-from player import Player
 import logging
 
 
 class Botnet:
     ut = Utils()
 
-    def __init__(self):
+    def __init__(self, player):
         self.username = config.user
         self.password = config.password
         self.botNetServers = config.botNetServers
         self.botnet = []
-        self._initbot()
-        self.p = Player()
+        self.p = player
 
     def _initbot(self):
         """
@@ -75,19 +73,20 @@ class Botnet:
         :return: none
         """
         for i in range(1, self.botNetServers+1):
-            response = self.ut.attackbotnetserver(i)
+            response =self.ut.attackbotnetserver(i)
+            logging.info("Netcoins gained: {0}  To come....".format(response))
 
     def attack(self):
         """
         Check if vHack server botnet is attackable, then attack if can.
         :return: none
         """
-        # logging.info("Trying Bot Net")
+        self._initbot()
+        logging.info("Trying Bot Net")
         if self._attackable():
             self._attackall()
         else:
-            pass
-            # logging.info("Botnet not hackable as yet")
+            logging.info("Botnet not hackable as yet")
 
     def upgradebotnet(self):
         """
@@ -155,8 +154,12 @@ class Bot:
         """
         response = self.ut.upgradebot(self.id)
         details = json.loads(response)
-        self.upgradecost = details['costs']
-        logging.info("Bot # {0} upgraded to level {1} at a cost of {2}".format(details['old'], details['lvl'], details['costs']))
+        try:
+            self.upgradecost = details['costs']
+            logging.info("Bot # {0} upgraded to level {1} at a cost of {2}".format(details['old'], details['lvl'], details['costs']))
+        except TypeError as e:
+            logging.info("Bot fully upgraded, should get this error. Fix me! {0}".format(e))
+            return None
         try:
             return details['money']
         except TypeError as e:

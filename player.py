@@ -19,6 +19,7 @@ class Player:
         self.remotespyware = ''
         self.email = 0
         self.savedIPs = []
+        self.anon_attack = config.anon
         self.init() # 10 secs
 
     def __repr__(self):
@@ -40,7 +41,6 @@ class Player:
 
     def removespy(self):
         response = self.ut.removespyware()
-
 
     def init(self):
         """
