@@ -11,8 +11,8 @@ import urllib2
 import random
 import logging
 
-class Utils:
 
+class Utils:
     def __init__(self):
         self.secret = config.secret
         self.url = config.baseurl
@@ -68,13 +68,13 @@ class Utils:
             n.append(self.parse(temp))
         return n
 
-    def requestString(self, format, data, php):
+    def requestString(self, form, data, php):
         time.sleep(random.randint(1, 2))
         r = None
         count = 0
-        while r == None:
+        while r is None:
             try:
-                r = urllib2.urlopen(self.generateURL(format, data, php))
+                r = urllib2.urlopen(self.generateURL(form, data, php))
                 t = r.read()
                 return t
             except Exception as err:
@@ -85,22 +85,8 @@ class Utils:
                     logging.warn("Network errors - Giving up")
                     sys.exit()
 
-    def requestStringNoWait(self, format, data, php):
-        for i1 in range(0, 10):
-            try:
-                r = urllib2.urlopen(self.generateURL(format, data, php))
-                t = r.read()
-                # print i1
-                return t
-            except Exception as err:
-                time.sleep(1)
-        return "null"
-
-    def printit(self, txt):
-        print txt
-
-    def requestArray(self, format, data, php):
-        temp = self.requestString(format, data, php)
+    def requestArray(self, form, data, php):
+        temp = self.requestString(form, data, php)
         if temp != "null":
             return self.parse(temp)
         else:
@@ -114,8 +100,9 @@ class Utils:
         containing: {"money":"3479746","old":"13","costs":"4100000","lvl":"41","mm":"7579746","new":"42","strength":"42"}
         """
         response = self.requestString("user::::pass::::uhash::::bID",
-                              self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + str(id),
-                              "vh_upgradeBotnet.php")
+                                      self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + str(
+                                          id),
+                                      "vh_upgradeBotnet.php")
         return response
 
     def botnetserverinfo(self):
@@ -124,8 +111,8 @@ class Utils:
         :return:
         """
         response = self.requestString("user::::pass::::uhash",
-                 self.username + "::::" + self.password + "::::" + "userHash_not_needed",
-                 "vh_botnetInfo.php")
+                                      self.username + "::::" + self.password + "::::" + "userHash_not_needed",
+                                      "vh_botnetInfo.php")
         return response
 
     def attackbotnetserver(self, i):
@@ -134,14 +121,14 @@ class Utils:
         :return: string
         """
         response = self.requestString("user::::pass::::uhash::::cID",
-                                self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + "1",
-                                "vh_attackCompany.php")
+                                      self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + "1",
+                                      "vh_attackCompany.php")
         temp = self.requestString("user::::pass::::uhash::::cID",
-                                     self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + "2",
-                                     "vh_attackCompany2.php")
+                                  self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + "2",
+                                  "vh_attackCompany2.php")
         temp = self.requestString("user::::pass::::uhash::::cID",
-                                     self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + "3",
-                                     "vh_attackCompany3.php")
+                                  self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + "3",
+                                  "vh_attackCompany3.php")
         """temp = self.requestString("user::::pass::::uhash::::cID",
                                   self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + "4",
                                      "vh_attackCompany4.php")"""
@@ -154,14 +141,14 @@ class Utils:
         :return: str
         """
         temp = self.requestString("user::::pass::::gcm::::uhash",
-                                     self.username + "::::" + self.password + "::::" + "eW7lxzLY9bE:APA91bEO2sZd6aibQerL3Uy-wSp3gM7zLs93Xwoj4zIhnyNO8FLyfcODkIRC1dc7kkDymiWxy_dTQ-bXxUUPIhN6jCUBVvGqoNXkeHhRvEtqAtFuYJbknovB_0gItoXiTev7Lc5LJgP2" + "::::" + "userHash_not_needed",
-                                     "vh_update.php")
+                                  self.username + "::::" + self.password + "::::" + "eW7lxzLY9bE:APA91bEO2sZd6aibQerL3Uy-wSp3gM7zLs93Xwoj4zIhnyNO8FLyfcODkIRC1dc7kkDymiWxy_dTQ-bXxUUPIhN6jCUBVvGqoNXkeHhRvEtqAtFuYJbknovB_0gItoXiTev7Lc5LJgP2" + "::::" + "userHash_not_needed",
+                                  "vh_update.php")
         return temp
 
     def removespyware(self):
         arr = self.requestArray("user::::pass::::uhash:::::",
-                              self.username + "::::" + self.password + "::::" + "UserHash_not_needed" + ":::::",
-                              "vh_removeSpyware.php")
+                                self.username + "::::" + self.password + "::::" + "UserHash_not_needed" + ":::::",
+                                "vh_removeSpyware.php")
         return arr
 
     def gettargets(self, hash):
@@ -170,8 +157,8 @@ class Utils:
         :return: str
         """
         temp = self.requestString("user::::pass::::uhash::::by",
-                                    self.username + "::::" + self.password + "::::" + str(
-                                        hash) + "::::" + str(random.randint(0, 1)), "vh_getImg.php")
+                                  self.username + "::::" + self.password + "::::" + str(
+                                      hash) + "::::" + str(random.randint(0, 1)), "vh_getImg.php")
         return temp
 
     def scantarget(self, uhash, hostname):
@@ -183,8 +170,8 @@ class Utils:
         :return: tgt data
         """
         temp = self.requestString("user::::pass::::uhash::::hostname",
-                                                     self.username + "::::" + self.password + "::::" + str(
-                                                         uhash) + "::::" + str(hostname), "vh_scanHost.php")
+                                  self.username + "::::" + self.password + "::::" + str(
+                                      uhash) + "::::" + str(hostname), "vh_scanHost.php")
         return temp
 
     def gethash(self):
@@ -211,8 +198,8 @@ class Utils:
         """
         uhash = self.gethash()
         temp = self.requestString("user::::pass::::uhash::::target",
-                                     self.username + "::::" + self.password + "::::" + str(
-                                         uhash) + "::::" + ip, "vh_loadRemoteData.php")
+                                  self.username + "::::" + self.password + "::::" + str(
+                                      uhash) + "::::" + ip, "vh_loadRemoteData.php")
         return temp
 
     def findportnumber(self, img):
@@ -234,9 +221,9 @@ class Utils:
          '{"result":"0","amount":4877810,"elo":2955,"eloch":1,"newmoney":5468422}'
         """
         temp = self.requestString("user::::pass::::port::::target::::uhash",
-                                     self.username + "::::" + self.password + "::::" + str(
-                                         passwd[1]) + "::::" + str(target) + "::::" + str(uhash),
-                                     "vh_trTransfer.php")
+                                  self.username + "::::" + self.password + "::::" + str(
+                                      passwd[1]) + "::::" + str(target) + "::::" + str(uhash),
+                                  "vh_trTransfer.php")
         if 'time' in temp:
             logging.info("{0} under protection: {1}".format(str(target), temp))
             return False
@@ -250,11 +237,11 @@ class Utils:
         """
         uhash = self.gethash()
         temp = self.requestString("user::::pass::::uhash",
-                                     self.username + "::::" + self.password + "::::" +
+                                  self.username + "::::" + self.password + "::::" +
                                   str(uhash), "vh_getNotepadData.php")
         j = json.loads(temp)
         ips = j['pad'].split('\n')
-        # logging.info("Saved IPs from Notepad: {0}".format(ips))
+        logging.info("Saved IPs from Notepad: {0}".format(ips))
         return ips
 
     def SpywareInfo(self):
@@ -263,6 +250,6 @@ class Utils:
                            'ip:23.93.18.103', 'next:now.}]', 'remote:1', 'result:0']
         """
         arr = self.requestArray("user::::pass::::uhash:::::",
-                              self.username + "::::" + self.password + "::::" + "UserHash_not_needed" + ":::::",
-                              "vh_spywareInfo.php")
+                                self.username + "::::" + self.password + "::::" + "UserHash_not_needed" + ":::::",
+                                "vh_spywareInfo.php")
         return arr

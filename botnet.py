@@ -11,8 +11,8 @@ class Botnet:
     ut = Utils()
 
     def __init__(self, player):
-        self.username = config.user
-        self.password = config.password
+        self.username = player.username
+        self.password = player.password
         self.botNetServers = config.botNetServers
         self.botnet = []
         self.p = player

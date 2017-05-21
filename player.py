@@ -68,7 +68,7 @@ class Player:
         self.localspyware = j['actadw']
         self.email = int(j['unreadmsg'])
         self.loadIPs()
-        if self.localspyware is not '':
+        if self.localspyware != '':
             logging.info('spyware found, attempting to remove')
             self.removespy()
         self.installedspyware = self.ut.SpywareInfo()# spyware installed on others
@@ -98,3 +98,4 @@ class Player:
         :return:
         """
         self.savedIPs = self.ut.notepadIPs()
+

@@ -1,11 +1,22 @@
 from utils import Utils
-
+import json
 
 class Update:
 
     ut = Utils()
 
-    def getTasks(self):
+    def getrunningtasks(self):
+        """
+        '{"data":[{"type":"sdk","start":"1495356942","end":"1495359788","wto":"1186","taskid":"110610282"}],
+        "fAllCosts":"23","money":"17798567","inet":"10","hdd":"10","cpu":"10","ram":"14","fw":"350","av":"747",
+        "sdk":"1185","ipsp":"151","spam":"204","scan":"575","adw":"210","netcoins":"9544","urmail":"0","score":"16254",
+        "energy":"262260372","useboost":"2","boost":"336","status":"1","stime":"1495357017"}'
+
+        ['data']
+        [{u'start': u'1495356942', u'end': u'1495359788', u'type': u'sdk', u'taskid': u'110610282', u'wto': u'1186'},
+         {u'start': u'1495357175', u'end': u'1495360024', u'type': u'sdk', u'taskid': u'110612494', u'wto': u'1187'}]
+        :return: string, as above if tasks.
+        """
         temp = self.ut.requestString("user::::pass::::uhash",
                                 self.username + "::::" + self.password + "::::" + "userHash_not_needed",
                                 "vh_tasks.php")
@@ -27,19 +38,35 @@ class Update:
                               "vh_removeSpyware.php")
         return arr
 
-    def getTaskAmount(self):
-        temp = self.getTasks()
-        return len(temp.split("taskid")) - 1
+    def runningtasks(self, tasks=None):
+        """
+        Return the number of running tasks.
+        :return: int
+        """
+        if not tasks:
+            tasks = self.getrunningtasks()
+        j = json.loads(tasks)
+        return len(j("taskid"))
 
-    def getTaskIDs(self):
-        temp = self.getTasks()
-        tasks = temp.split('"taskid":"')[1:]
-        n = []
-        for i1 in tasks:
-            n.append(i1.split('"')[0])
-        return n
+    def getTaskIDs(self, tasks=None):
+        """
+        Return a list of task ids
+        [u'110610282', u'110612494']
+        :param tasks string of json data
+        :return: list
+        """
+        if not tasks:
+            tasks = self.getrunningtasks()
+        j = json.loads(tasks)
+        return [x['taskid'] for x in j['data']]
 
     def startTask(self, type):
+        """
+        Start a task.
+        :param type: string variable of task type, "adw","fw" etc. See config file.
+        :return:
+        """
+
         temp = self.ut.requestString("user::::pass::::uhash::::utype",
                                 self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + type,
                                 "vh_addUpdate.php")
