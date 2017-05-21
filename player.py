@@ -1,6 +1,8 @@
 import config
 from utils import Utils
 import json
+import logging
+
 
 class Player:
     ut = Utils()
@@ -19,6 +21,7 @@ class Player:
         self.email = 0
         self.savedIPs = []
         self.anon_attack = config.anon
+        self.installedspyware = []
         self.init() # 10 secs
 
     def __repr__(self):
@@ -59,12 +62,19 @@ class Player:
         self.ip = j['ip']
         self.score = j['score']
         self.netcoins = j['netcoins']
-        self.localspyware = j['actspyware']
+        self.remotespyware = j['actspyware']
         self.rank = j['rank']
         self.boosters = j['boost']
-        self.remotespyware = j['actadw']
+        self.localspyware = j['actadw']
         self.email = int(j['unreadmsg'])
         self.loadIPs()
+        if self.localspyware is not '':
+            logging.info('spyware found, attempting to remove')
+            self.removespy()
+        self.installedspyware = self.ut.SpywareInfo()# spyware installed on others
+
+    def attackspyware(self):
+        pass
 
     def refreshinfo(self):
         """

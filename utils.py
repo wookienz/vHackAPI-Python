@@ -256,3 +256,13 @@ class Utils:
         ips = j['pad'].split('\n')
         # logging.info("Saved IPs from Notepad: {0}".format(ips))
         return ips
+
+    def SpywareInfo(self):
+        """
+        < type 'list' >: ['local:0', 'data:[{av:392', 'fw:417', 'money:42793029', 'spam:467', 'user:ShittyGame',
+                           'ip:23.93.18.103', 'next:now.}]', 'remote:1', 'result:0']
+        """
+        arr = self.requestArray("user::::pass::::uhash:::::",
+                              self.username + "::::" + self.password + "::::" + "UserHash_not_needed" + ":::::",
+                              "vh_spywareInfo.php")
+        return arr
