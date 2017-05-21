@@ -256,3 +256,29 @@ class Utils:
                                 self.username + "::::" + self.password + "::::" + "UserHash_not_needed" + ":::::",
                                 "vh_spywareInfo.php")
         return arr
+
+    def getrunningtaskdata(self):
+        """
+        '{"data":[{"type":"sdk","start":"1495356942","end":"1495359788","wto":"1186","taskid":"110610282"}],
+        "fAllCosts":"23","money":"17798567","inet":"10","hdd":"10","cpu":"10","ram":"14","fw":"350","av":"747",
+        "sdk":"1185","ipsp":"151","spam":"204","scan":"575","adw":"210","netcoins":"9544","urmail":"0","score":"16254",
+        "energy":"262260372","useboost":"2","boost":"336","status":"1","stime":"1495357017"}'
+        :return: string
+        """
+        temp = self.requestString("user::::pass::::uhash",
+                                self.username + "::::" + self.password + "::::" + "userHash_not_needed",
+                                "vh_tasks.php")
+        return temp
+
+    def starttask(self, i):
+        temp = self.requestString("user::::pass::::uhash::::utype",
+                                self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + i,
+                                "vh_addUpdate.php")
+        return temp
+
+    def finishtask(self, id):
+        temp = self.requestString("user::::pass::::uhash::::taskid",
+                                 self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + id,
+                                 "vh_finishTask.php")
+        logging.info("Finished task: {0}".format(id))
+        return temp

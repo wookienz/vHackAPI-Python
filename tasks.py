@@ -1,9 +1,45 @@
 from utils import Utils
 import json
+import logging
 
-class Update:
+
+class Tasks:
 
     ut = Utils()
+
+    def __init__(self, obj):
+        self.username = obj.username
+        self.password = obj.password
+        self.runningtasks = 0
+        self.taskpriority = obj.taskpri
+        self.tasks = []
+        self.ram = 0
+        self.money = 0
+        self._init()
+
+    def __repr__(self):
+        return "".format(self.tasks)
+
+    def _init(self):
+        data = self.ut.getrunningtaskdata()
+        j = json.loads(data)
+        try:
+            self.ram = j['ram']
+            for i in j['data']:
+                self.addtask(i)
+            self.runningtasks = len(self.tasks)
+            self.money = int(j['money'])
+        except KeyError:
+            logging.info("No tasks running currently")
+            # self.runningtasks = []
+
+    def addtask(self, j):
+        """
+        Add a task class to tasks holder
+        :return:
+        """
+        t = Task(j['start'], j['end'], j['type'], j['taskid'], j['lvl'])
+        self.tasks.append(t)
 
     def getrunningtasks(self):
         """
@@ -15,12 +51,14 @@ class Update:
         ['data']
         [{u'start': u'1495356942', u'end': u'1495359788', u'type': u'sdk', u'taskid': u'110610282', u'wto': u'1186'},
          {u'start': u'1495357175', u'end': u'1495360024', u'type': u'sdk', u'taskid': u'110612494', u'wto': u'1187'}]
-        :return: string, as above if tasks.
+
+        :return:
         """
-        temp = self.ut.requestString("user::::pass::::uhash",
-                                self.username + "::::" + self.password + "::::" + "userHash_not_needed",
-                                "vh_tasks.php")
-        return temp
+        temp = self.ut.getrunningtaskdata()
+        j = json.loads(temp)
+        self.tasks = j['data']
+        self.runningtasks = len(self.tasks)
+        return j
 
     def SpywareInfo(self):
         """
@@ -48,7 +86,7 @@ class Update:
         j = json.loads(tasks)
         return len(j("taskid"))
 
-    def getTaskIDs(self, tasks=None):
+    def _getTaskID(self, tasks=None):
         """
         Return a list of task ids
         [u'110610282', u'110612494']
@@ -70,23 +108,25 @@ class Update:
         :return:
         """
 
-        temp = self.ut.requestString("user::::pass::::uhash::::utype",
-                                self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + type,
-                                "vh_addUpdate.php")
+        temp = self.ut.starttask(type)
+        self.getrunningtasks()
         if "result" in temp:
             return temp.split('result":"')[1].split('"')[0]
         return "2"
 
-    def finishTask(self, taskID):
-        temp = self.ut.requestString("user::::pass::::uhash::::taskid",
-                                self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + taskID,
-                                "vh_finishTask.php")
-        if "4" in temp:
-            return True
-        else:
-            return False
+    def finishTask(self, taskobj):
+        """
+        Finish single task.
+        :param taskobj: task object
+        :return:
+        """
+        taskobj.finishtask()
 
     def finishAll(self):
+        """
+        Finish all tasks for netcoins
+        :return:
+        """
         temp = self.ut.requestString("user::::pass::::uhash",
                                 self.username + "::::" + self.password + "::::" + "userHash_not_needed",
                                 "vh_finishAll.php")
@@ -101,6 +141,34 @@ class Update:
                                 "vh_tasks.php")
         return temp
 
-    def __init__(self, obj):
-        self.username = obj.username
-        self.password = obj.password
+    def filltaskqueue(self):
+        """
+        Keep task queue up to date. Add task according to priority.
+        :return:
+        """
+
+        while self.runningtasks < self.ram:
+            self.startTask(self.taskpriority[0])
+            self.getrunningtasks()
+
+class Task:
+
+    ut = Utils()
+
+    def __init__(self, start, end, type, id, lvl):
+        """
+        [{u'start': u'1495356942', u'end': u'1495359788', u'type': u'sdk', u'taskid': u'110610282', u'wto': u'1186'},
+        :param
+        """
+        self.start = start
+        self.id = id
+        self.lvl = lvl
+        self.type = type
+        self.end = end
+
+    def __repr__(self):
+        return "Task id {0}, Type: {1}, Level: {2}".format(self.id, self.type, self.lvl)
+
+    def finishtask(self):
+        self.ut.finishtask(self.id)
+

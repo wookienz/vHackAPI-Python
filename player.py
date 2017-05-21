@@ -23,6 +23,7 @@ class Player:
         self.anon_attack = config.anon
         self.installedspyware = []
         self.init() # 10 secs
+        self.taskpri = config.tasks
 
     def __repr__(self):
         return "Money: {0}, Score: {1}".format(self.money, self.score)
