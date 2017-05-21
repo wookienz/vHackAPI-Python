@@ -53,6 +53,9 @@ class Update:
         Return a list of task ids
         [u'110610282', u'110612494']
         :param tasks string of json data
+         ['data']
+        [{u'start': u'1495356942', u'end': u'1495359788', u'type': u'sdk', u'taskid': u'110610282', u'wto': u'1186'},
+         {u'start': u'1495357175', u'end': u'1495360024', u'type': u'sdk', u'taskid': u'110612494', u'wto': u'1187'}]
         :return: list
         """
         if not tasks:

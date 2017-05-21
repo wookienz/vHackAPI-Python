@@ -79,10 +79,10 @@ class Utils:
                 return t
             except Exception as err:
                 count += 1
-                logging.info("network error, trying again. Count: {0}".format(count))
+                logging.warn("network error, trying again. Count: {0}".format(count))
                 time.sleep(count)
                 if count == 10:
-                    logging.warn("Network errors - Giving up")
+                    logging.warn("Network errors - Giving up. Dumping data: {0}, {1}, {2}".format(form, data, php))
                     sys.exit()
 
     def requestArray(self, form, data, php):
@@ -143,6 +143,9 @@ class Utils:
         temp = self.requestString("user::::pass::::gcm::::uhash",
                                   self.username + "::::" + self.password + "::::" + "eW7lxzLY9bE:APA91bEO2sZd6aibQerL3Uy-wSp3gM7zLs93Xwoj4zIhnyNO8FLyfcODkIRC1dc7kkDymiWxy_dTQ-bXxUUPIhN6jCUBVvGqoNXkeHhRvEtqAtFuYJbknovB_0gItoXiTev7Lc5LJgP2" + "::::" + "userHash_not_needed",
                                   "vh_update.php")
+        if len(temp) is 1:
+            logging.error("Are Username and Password correct?")
+            sys.exit()
         return temp
 
     def removespyware(self):
