@@ -7,19 +7,20 @@ class Update:
 
     def getTasks(self):
         temp = self.ut.requestString("user::::pass::::uhash",
-                                self.api.getUsername() + "::::" + self.api.getPassword() + "::::" + "userHash_not_needed",
+                                self.username + "::::" + self.password + "::::" + "userHash_not_needed",
                                 "vh_tasks.php")
         return temp
 
     def SpywareInfo(self):
+        # < type 'list' >: ['local:0', 'remote:0']
         arr = self.ut.requestArray("user::::pass::::uhash:::::",
-                              self.api.getUsername() + "::::" + self.api.getPassword() + "::::" + "UserHash_not_needed" + ":::::",
+                              self.username + "::::" + self.password + "::::" + "UserHash_not_needed" + ":::::",
                               "vh_spywareInfo.php")
         return arr
 
     def removeSpyware(self):
         arr = self.ut.requestArray("user::::pass::::uhash:::::",
-                              self.api.getUsername() + "::::" + self.api.getPassword() + "::::" + "UserHash_not_needed" + ":::::",
+                              self.username + "::::" + self.password + "::::" + "UserHash_not_needed" + ":::::",
                               "vh_removeSpyware.php")
         return arr
 
@@ -37,7 +38,7 @@ class Update:
 
     def startTask(self, type):
         temp = self.ut.requestString("user::::pass::::uhash::::utype",
-                                self.api.getUsername() + "::::" + self.api.getPassword() + "::::" + "userHash_not_needed" + "::::" + type,
+                                self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + type,
                                 "vh_addUpdate.php")
         if "result" in temp:
             return temp.split('result":"')[1].split('"')[0]
@@ -45,7 +46,7 @@ class Update:
 
     def finishTask(self, taskID):
         temp = self.ut.requestString("user::::pass::::uhash::::taskid",
-                                self.api.getUsername() + "::::" + self.api.getPassword() + "::::" + "userHash_not_needed" + "::::" + taskID,
+                                self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + taskID,
                                 "vh_finishTask.php")
         if "4" in temp:
             return True
@@ -54,7 +55,7 @@ class Update:
 
     def finishAll(self):
         temp = self.ut.requestString("user::::pass::::uhash",
-                                self.api.getUsername() + "::::" + self.api.getPassword() + "::::" + "userHash_not_needed",
+                                self.username + "::::" + self.password + "::::" + "userHash_not_needed",
                                 "vh_finishAll.php")
         if "0" in temp:
             return True
@@ -63,9 +64,10 @@ class Update:
 
     def useBooster(self):
         temp = self.ut.requestString("user::::pass::::uhash::::boost",
-                                self.api.getUsername() + "::::" + self.api.getPassword() + "::::" + "userHash_not_needed" + "::::" + "1",
+                                self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + "1",
                                 "vh_tasks.php")
         return temp
 
-    def __init__(self, api):
-        self.api = api
+    def __init__(self, obj):
+        self.username = obj.username
+        self.password = obj.password

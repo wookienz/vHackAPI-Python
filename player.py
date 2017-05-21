@@ -2,7 +2,6 @@ import config
 from utils import Utils
 import json
 
-
 class Player:
     ut = Utils()
 
