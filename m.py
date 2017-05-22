@@ -8,7 +8,7 @@ import time
 # 8seconds to import
 
 locale.setlocale(locale.LC_ALL, '')
-logging.basicConfig(filename='vhack.log', level=logging.DEBUG)
+logging.basicConfig(filename='vhack.log', level=logging.INFO)
 
 logging.info("...............Starting Up...............{0}".format(time.time()))
 
