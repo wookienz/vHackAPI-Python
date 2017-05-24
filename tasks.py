@@ -26,7 +26,7 @@ class Tasks:
         try:
             self.ram = j['ram']
             for i in j['data']:
-                self.addtask(i)
+                    self.addtask(i)
             self.runningtasks = len(self.tasks)
             self.money = int(j['money'])
         except KeyError:
@@ -36,10 +36,11 @@ class Tasks:
     def addtask(self, j):
         """
         Add a task class to tasks holder
+        :param j: {u'start': u'1495356942', u'end': u'1495359788', u'type': u'sdk', u'taskid': u'110610282',
+        u'wto': u'1186'}
         :return:
         """
-        t = Task(j['start'], j['end'], j['type'], j['taskid'], j['lvl'])
-        self.tasks.append(t)
+        self.tasks.append(Task(j['start'], j['end'], j['type'], j['taskid'], j['wto']))
 
     def getrunningtasks(self):
         """
@@ -56,9 +57,7 @@ class Tasks:
         """
         temp = self.ut.getrunningtaskdata()
         j = json.loads(temp)
-        self.tasks = j['data']
-        self.runningtasks = len(self.tasks)
-        return j
+        return j['data']
 
     def SpywareInfo(self):
         """
@@ -75,16 +74,6 @@ class Tasks:
                               self.username + "::::" + self.password + "::::" + "UserHash_not_needed" + ":::::",
                               "vh_removeSpyware.php")
         return arr
-
-    def runningtasks(self, tasks=None):
-        """
-        Return the number of running tasks.
-        :return: int
-        """
-        if not tasks:
-            tasks = self.getrunningtasks()
-        j = json.loads(tasks)
-        return len(j("taskid"))
 
     def _getTaskID(self, tasks=None):
         """
@@ -107,12 +96,24 @@ class Tasks:
         :param type: string variable of task type, "adw","fw" etc. See config file.
         :return:
         """
-
         temp = self.ut.starttask(type)
-        self.getrunningtasks()
-        if "result" in temp:
-            return temp.split('result":"')[1].split('"')[0]
-        return "2"
+        self.money = int(temp['money'])
+        self._newtask()
+
+    def _newtask(self):
+        """
+        When a new task is added, no task id is passed back. Grab all tasks running, sort through task ids and
+        add the new one to self.tasks
+        ['data']
+        [{u'start': u'1495356942', u'end': u'1495359788', u'type': u'sdk', u'taskid': u'110610282', u'wto': u'1186'},
+         {u'start': u'1495357175', u'end': u'1495360024', u'type': u'sdk', u'taskid': u'110612494', u'wto': u'1187'}]
+        :return:
+        """
+        jdata = self.getrunningtasks()
+        for i in self.tasks:
+            for j in jdata['data']:
+                if j['taskid'] not in i:
+                    self.addtask(j)
 
     def finishTask(self, taskobj):
         """
@@ -120,7 +121,7 @@ class Tasks:
         :param taskobj: task object
         :return:
         """
-        taskobj.finishtask()
+        taskobj._finishtask()
 
     def finishAll(self):
         """
@@ -149,7 +150,8 @@ class Tasks:
 
         while self.runningtasks < self.ram:
             self.startTask(self.taskpriority[0])
-            self.getrunningtasks()
+            # update tasks here
+
 
 class Task:
 
@@ -169,6 +171,8 @@ class Task:
     def __repr__(self):
         return "Task id {0}, Type: {1}, Level: {2}".format(self.id, self.type, self.lvl)
 
-    def finishtask(self):
+    def _finishtask(self):
         self.ut.finishtask(self.id)
 
+    def gettaskid(self):
+        return self.id

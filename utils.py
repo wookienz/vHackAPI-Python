@@ -271,6 +271,13 @@ class Utils:
         return temp
 
     def starttask(self, i):
+        """
+        temp
+        '{"costs":"328400","type":"fw","av":"858","fw":"402","sdk":"1275","ipsp":"185","spam":"220","scan":"589",
+        "adw":"256","cpu":"10","ram":"14","hdd":"10","inet":"10","new":"407","money":"417427940","result":"0"}'
+        :param i:
+        :return:
+        """
         temp = self.requestString("user::::pass::::uhash::::utype",
                                 self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + i,
                                 "vh_addUpdate.php")
