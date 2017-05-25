@@ -33,9 +33,9 @@ class Player:
 
     def setmoney(self, amount):
         """
-        Change class money value, pass in neg or postive values
-        :param amount:
-        :return:
+        Reset money value
+        :param amount: int
+        :return: None
         """
         self.money = amount
 

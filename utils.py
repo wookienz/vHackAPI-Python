@@ -263,6 +263,8 @@ class Utils:
         "fAllCosts":"23","money":"17798567","inet":"10","hdd":"10","cpu":"10","ram":"14","fw":"350","av":"747",
         "sdk":"1185","ipsp":"151","spam":"204","scan":"575","adw":"210","netcoins":"9544","urmail":"0","score":"16254",
         "energy":"262260372","useboost":"2","boost":"336","status":"1","stime":"1495357017"}'
+
+        temp is : '{"boost":"498","netcoins":"5435","status":"0"}' is no running tasks.
         :return: string
         """
         temp = self.requestString("user::::pass::::uhash",
@@ -276,7 +278,7 @@ class Utils:
         '{"costs":"328400","type":"fw","av":"858","fw":"402","sdk":"1275","ipsp":"185","spam":"220","scan":"589",
         "adw":"256","cpu":"10","ram":"14","hdd":"10","inet":"10","new":"407","money":"417427940","result":"0"}'
         :param i:
-        :return:
+        :return: string
         """
         temp = self.requestString("user::::pass::::uhash::::utype",
                                 self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + i,
@@ -284,6 +286,11 @@ class Utils:
         return temp
 
     def finishtask(self, id):
+        """
+        Given an id of a task, finish task with netcoins
+        :param id: string
+        :return: string - succesful '4'
+        """
         temp = self.requestString("user::::pass::::uhash::::taskid",
                                  self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + id,
                                  "vh_finishTask.php")

@@ -13,8 +13,9 @@ class Tasks:
         self.runningtasks = 0
         self.taskpriority = obj.taskpri
         self.tasks = []
+        self.money = obj.getmoney()
         self.ram = 0
-        self.money = 0
+        self.p = obj
         self._init()
 
     def __repr__(self):
@@ -24,14 +25,17 @@ class Tasks:
         data = self.ut.getrunningtaskdata()
         j = json.loads(data)
         try:
-            self.ram = j['ram']
             for i in j['data']:
                     self.addtask(i)
             self.runningtasks = len(self.tasks)
-            self.money = int(j['money'])
-        except KeyError:
-            logging.info("No tasks running currently")
-            # self.runningtasks = []
+            self.ram = int(j['ram'])
+            self._updatemoney(j['money'])
+        except Exception:
+            data = self.ut.myinfo()
+            j = json.loads(data)
+            self.ram = j['ram']
+            self.money = self.p.getmoney()
+            self.runningtasks = 0
 
     def addtask(self, j):
         """
@@ -92,32 +96,47 @@ class Tasks:
 
     def startTask(self, type):
         """
-        Start a task.
+        Start a task. j['result'] = 3 when full queue, '1' if not enough money, '0 if successful,
         :param type: string variable of task type, "adw","fw" etc. See config file.
         :return:
         """
         temp = self.ut.starttask(type)
-        self.money = int(temp['money'])
-        self._newtask()
+        j = json.loads(temp)
+        if j['result'] == '0':
+            self._updatemoney(j['money'])
+            self._newtask()
+            return True
+        else:
+            return False
+
+    def _updatemoney(self, j):
+        """
+        Update player and Tasks class money variable
+        :param j: string of money amount
+        :return:
+        """
+        self.money = int(j)
+        self.p.setmoney(int(j))
 
     def _newtask(self):
         """
         When a new task is added, no task id is passed back. Grab all tasks running, sort through task ids and
         add the new one to self.tasks
-        ['data']
+        jdata is a list as below:
         [{u'start': u'1495356942', u'end': u'1495359788', u'type': u'sdk', u'taskid': u'110610282', u'wto': u'1186'},
          {u'start': u'1495357175', u'end': u'1495360024', u'type': u'sdk', u'taskid': u'110612494', u'wto': u'1187'}]
         :return:
         """
         jdata = self.getrunningtasks()
-        for i in self.tasks:
-            for j in jdata['data']:
-                if j['taskid'] not in i:
-                    self.addtask(j)
+        oldtasks = [x.id for x in self.tasks]
+        for j in jdata:
+            if j['taskid'] not in oldtasks:
+                self.addtask(j)
+                self.runningtasks = len(jdata)
 
     def finishTask(self, taskobj):
         """
-        Finish single task.
+        Finish single task with NetCoins
         :param taskobj: task object
         :return:
         """
@@ -125,7 +144,7 @@ class Tasks:
 
     def finishAll(self):
         """
-        Finish all tasks for netcoins
+        Finish all tasks with netcoins
         :return:
         """
         temp = self.ut.requestString("user::::pass::::uhash",
@@ -142,15 +161,17 @@ class Tasks:
                                 "vh_tasks.php")
         return temp
 
-    def filltaskqueue(self):
+    def filltaskqueue(self, upgrade=None):
         """
         Keep task queue up to date. Add task according to priority.
         :return:
         """
-
-        while self.runningtasks < self.ram:
-            self.startTask(self.taskpriority[0])
-            # update tasks here
+        if not upgrade:
+            upgrade = self.taskpriority[0]
+        while self.runningtasks < int(self.ram):
+            result = self.startTask(upgrade)
+            if not result: # False returned, either full queue or no money
+                break
 
 
 class Task:
@@ -172,6 +193,10 @@ class Task:
         return "Task id {0}, Type: {1}, Level: {2}".format(self.id, self.type, self.lvl)
 
     def _finishtask(self):
+        """
+        Finish self task with netcoins
+        :return:
+        """
         self.ut.finishtask(self.id)
 
     def gettaskid(self):
