@@ -94,17 +94,18 @@ class Tasks:
         j = json.loads(tasks)
         return [x['taskid'] for x in j['data']]
 
-    def startTask(self, type):
+    def startTask(self, typ):
         """
         Start a task. j['result'] = 3 when full queue, '1' if not enough money, '0 if successful,
-        :param type: string variable of task type, "adw","fw" etc. See config file.
+        :param typ: string variable of task type, "adw","fw" etc. See config file.
         :return:
         """
-        temp = self.ut.starttask(type)
+        temp = self.ut.starttask(typ)
         j = json.loads(temp)
         if j['result'] == '0':
             self._updatemoney(j['money'])
             self._newtask()
+            logging.info("Starting Task: {0}".format(typ))
             return True
         else:
             return False
@@ -117,6 +118,7 @@ class Tasks:
         """
         self.money = int(j)
         self.p.setmoney(int(j))
+        logging.info("Updating money after adding task")
 
     def _newtask(self):
         """
@@ -170,6 +172,7 @@ class Tasks:
             upgrade = self.taskpriority[0]
         while self.runningtasks < int(self.ram):
             result = self.startTask(upgrade)
+            logging.info("Starting task upgrade of type: {0}".format(upgrade))
             if not result: # False returned, either full queue or no money
                 break
 
@@ -178,15 +181,15 @@ class Task:
 
     ut = Utils()
 
-    def __init__(self, start, end, type, id, lvl):
+    def __init__(self, start, end, typ, taskid, lvl):
         """
-        [{u'start': u'1495356942', u'end': u'1495359788', u'type': u'sdk', u'taskid': u'110610282', u'wto': u'1186'},
+        [{u'start': u'1495356942', u'end': u'1495359788', u'typ': u'sdk', u'taskid': u'110610282', u'wto': u'1186'},
         :param
         """
         self.start = start
-        self.id = id
+        self.id = taskid
         self.lvl = lvl
-        self.type = type
+        self.type = typ
         self.end = end
 
     def __repr__(self):

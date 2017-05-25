@@ -37,9 +37,9 @@ tournament_potator = True
 AttackTournamentDB = False
 Max_point_tournament = 1300
 # Enter Updates (inet, hdd, cpu, ram, fw, av, sdk, ipsp, spam, scan, adw)
-updates = ["ipsp", "adw", "fw", "scan", "sdk", "av"]
-# updates = ["fw"]
-# updates = ["ipsp",  "sdk"]
+# tasks = ["ipsp", "adw", "fw", "scan", "sdk", "av"]
+tasks = ["fw"]
+# tasks = ["ipsp",  "sdk"]
 # Do you want to attack during tournament [True, False]
 joinTournament = False
 # Time to wait between each cycle in seconds
@@ -49,11 +49,13 @@ updatecount = 0
 attackneeded = False
 database = 'database.db'
 anon = True
+winchance = 90
+
+# DONT CHANGE BELOW
 secret = "aeffI"
 baseurl = "https://api.vhack.cc/v/7/"
 botNetServers = 3
-attackchance = 90
 logfile = 'vhack.log'
 logging_level = 'INFO'
-winchance = 90
+
 
