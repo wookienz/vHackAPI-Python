@@ -79,7 +79,7 @@ class Console:
     def attackdecision(self, data):
         if self.anon_attack and data['anonymous'] is "No":
             return False
-        if '???' is data['winchance']:
+        if '???' == data['winchance']:
             return False
         elif int(data['winchance']) >= self.winchance:
             return True
