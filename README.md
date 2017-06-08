@@ -7,7 +7,7 @@ vHackAPI written in Python 2.7.
 #### thanx for FluffySteamCat has record the bot  
 [![vHackBot video here](https://img.youtube.com/vi/7Ot4xqhh4T8/1.jpg)](https://www.youtube.com/watch?v=ccWs7Fa9GUI&feature=youtu.be) [![vHackBot video here](https://img.youtube.com/vi/vNp_T7h990s/1.jpg)](https://www.youtube.com/watch?v=vNp_T7h990s&feature=youtu.be) [![vHackBot video here](https://img.youtube.com/vi/eTw3DOeJjWw/1.jpg)](https://www.youtube.com/watch?v=eTw3DOeJjWw)  
 
-[Linux version . . . Windows Version and CHAT for vHackXT]
+[Linux version]
 
 [Official Database OlympicCode ](https://vhack.olympiccode.ga/database/)
 thanx to [@checkium](https://github.com/checkium) .......................
@@ -25,8 +25,8 @@ Function
 - it's the number 1 bot for vHackXT
 - detected if you are blocked on the api vHackXT and waiting (~5 Minutes)
 - Auto update Botnet 
-- Chat resolve cluster name (execute : python chat.py in linux and just run chat.exe for windows)  
-(Windows no support all charset in the chat :( ) 
+
+
 
 The app is dev mode.  
 Logging via vhack.log.

@@ -11,7 +11,7 @@ import tasks
 locale.setlocale(locale.LC_ALL, '')
 logging.basicConfig(filename='vhack.log', level=logging.INFO)
 
-logging.info("...............Starting Up...............{0}".format(time.time()))
+logging.info("...............Starting Up...............at time: {0}".format(time.time()))
 
 a = Console()
 p = Player()

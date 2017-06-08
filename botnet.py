@@ -45,7 +45,7 @@ class Botnet:
 
     def getInfo(self):
         """
-        Get infor about the entire botnet. Including if you can attack bot net servers etc. Also bot net PC info
+        Get info about the entire botnet. Including if you can attack bot net servers etc. Also bot net PC info
         :return: list of vHack serves that can be hacked. ['1','2','1']. '1' = can be hacked, '2' time not elapsed.
         """
         response = self.ut.botnetserverinfo()
