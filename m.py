@@ -25,7 +25,7 @@ while True:
     t.filltaskqueue()
     bot.attack()
     time.sleep(3)
-    bot.upgradebotnet()
+#    bot.upgradebotnet()
     time.sleep(3)
     a.attack()
     for i in p.savedIPs:
