@@ -38,7 +38,7 @@ AttackTournamentDB = False
 Max_point_tournament = 1300
 # Enter Updates (inet, hdd, cpu, ram, fw, av, sdk, ipsp, spam, scan, adw)
 # tasks = ["ipsp", "adw", "fw", "scan", "sdk", "av"]
-tasks = ["fw"]
+tasks = ["av"]
 # tasks = ["ipsp",  "sdk"]
 # Do you want to attack during tournament [True, False]
 joinTournament = False
@@ -50,6 +50,7 @@ attackneeded = False
 database = 'database.db'
 anon = True
 winchance = 90
+nclevel = 40  # NC to finish upgrade tasks before stop using boosters and buy outright
 
 # DONT CHANGE BELOW
 secret = "aeffI"

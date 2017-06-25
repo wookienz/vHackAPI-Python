@@ -16,6 +16,7 @@ class Tasks:
         self.money = obj.getmoney()
         self.ram = 0
         self.p = obj
+        self.level = obj.nclevel
         self._init()
 
     def __repr__(self):
@@ -153,14 +154,49 @@ class Tasks:
                                 self.username + "::::" + self.password + "::::" + "userHash_not_needed",
                                 "vh_finishAll.php")
         if "0" in temp:
+            self.runningtasks = 0
             return True
         else:
             return False
 
+    def boosterplusnetcoins(self):
+        """
+        Use boosters until a level, then finish with netcoins.
+        :return:
+        """
+        self.level = 40  # at what netcoin amount to just finish all with NC instead of more boosters.
+        netcoinstofinish = 41
+        while netcoinstofinish > self.level:
+            logging.info("Netcoins completion still too high, using another booster")
+            r = self.useBooster()
+            j = json.loads(r)
+            if int(j['status']) != 0:
+                netcoinstofinish = int(j['fAllCosts'])
+                logging.info("Netcoins to finish them all: {0}, level of netcoins to spent: {1}"
+                             .format(netcoinstofinish, self.level))
+            else:
+                logging.info("No tasks left to use netcoins on")
+                self.runningtasks = 0
+                return
+        self.finishAll()
+
     def useBooster(self):
+        """
+        if no tasks - {"boost":"2181","netcoins":"62539","status":"0"}
+        if task running:
+        {"data":[{"type":"av","start":"1498274673","end":"1498278365","wto":"3047","taskid":"127531860"},
+            {"type":"av","start":"1498274677","end":"1498278368","wto":"3048","taskid":"127531883"},
+            {"type":"av","start":"1498274681","end":"1498278372","wto":"3049","taskid":"127531897"},
+            {"type":"av","start":"1498274686","end":"1498278375","wto":"3050","taskid":"127531927"}],
+        "fAllCosts":"425","money":"680601793","inet":"10","hdd":"10","cpu":"10","ram":"14","fw":"1912","av":"3046",
+        "sdk":"2984","ipsp":"458","spam":"568","scan":"1239","adw":"582","netcoins":"77875","urmail":"0",
+        "score":"43053","energy":"0","useboost":"0","boost":"2139","status":"1","stime":"1498274745"}
+        :return: string
+        """
         temp = self.ut.requestString("user::::pass::::uhash::::boost",
                                 self.username + "::::" + self.password + "::::" + "userHash_not_needed" + "::::" + "1",
                                 "vh_tasks.php")
+        logging.info("Used booster")
         return temp
 
     def filltaskqueue(self, upgrade=None):
@@ -174,7 +210,8 @@ class Tasks:
             result = self.startTask(upgrade)
             logging.info("Starting task upgrade of type: {0}".format(upgrade))
             if not result: # False returned, either full queue or no money
-                break
+                return False
+        return True
 
 
 class Task:

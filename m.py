@@ -20,9 +20,15 @@ bot = Botnet(p)
 t = tasks.Tasks(p)
 
 logging.info("Player money: {0}".format(locale.currency(int(p.money))))
+logging.info("Player money: {0}".format(locale.format("%d", int(p.money), grouping=True)))
+
 
 while True:
-    t.filltaskqueue()
+    while True:
+        if t.filltaskqueue():
+            t.boosterplusnetcoins()
+        else:
+            break
     bot.attack()
     time.sleep(3)
 #    bot.upgradebotnet()
