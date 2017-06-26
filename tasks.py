@@ -147,7 +147,8 @@ class Tasks:
 
     def finishAll(self):
         """
-        Finish all tasks with netcoins
+        Finish all tasks with netcoins.
+        temp = '0' if all finished.
         :return:
         """
         temp = self.ut.requestString("user::::pass::::uhash",
@@ -172,7 +173,7 @@ class Tasks:
             j = json.loads(r)
             if int(j['status']) != 0:
                 netcoinstofinish = int(j['fAllCosts'])
-                logging.info("Netcoins to finish them all: {0}, level of netcoins to spent: {1}"
+                logging.info("Netcoins to finish them all: {0}, level of netcoins to spend: {1}"
                              .format(netcoinstofinish, self.level))
             else:
                 logging.info("No tasks left to use netcoins on")

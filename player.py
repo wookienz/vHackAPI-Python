@@ -22,6 +22,7 @@ class Player:
         self.savedIPs = []
         self.anon_attack = config.anon
         self.installedspyware = []
+        self.nclevel = config.nclevel
         self.init() # 10 secs
         self.taskpri = config.tasks
 
@@ -98,5 +99,23 @@ class Player:
         NOTE: IPs on notepad through game must be clean. '1,2,3,4' only, not words. ie '1.2.3.4 300million'
         :return:
         """
-        self.savedIPs = self.ut.notepadIPs()
+        self.savedIPs = self.ut.getNotepadIPs()
+
+    def saveIP(self, ip, description):
+        """
+        Givcen an ip string save to notepad
+        :param ip:
+        :return:
+        """
+        self.ut.saveNotepadIPs(ip, description)
+        self.loadIPs()
+
+    def removeIP(self, ip):
+        """
+        Remove IP from saved ips notepad
+        :param ip:
+        :return:
+        """
+        pass
+    # vh_removeNotepadIP.php          "ipid"
 

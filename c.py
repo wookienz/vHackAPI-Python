@@ -53,6 +53,11 @@ class Console:
         self.attackip(ip)
 
     def attackip(self, ip):
+        """
+        Result: '{"result":"0","amount":28884687,"elo":4291,"eloch":0,"newmoney":505738794}'
+        :param ip: u'36.105.207.122'
+        :return: None
+        """
         logging.info('Attacking target with ip: {0}'.format(ip))
         uhash = self.ut.gethash()
         time.sleep(2)
@@ -67,8 +72,10 @@ class Console:
             result = self.ut.transferTrojan(attackport, ip, uhash)
             if result:
                 j = json.loads(result)
+                if j['newmoney'] > 1000000000:
+                    pass
                 try:
-                    logging.info('managed to steal {0}, Rep gained: {1}'.format(locale.currency(j['amount']), j['eloch']))
+                    logging.info('managed to steal ${0}, Rep gained: {1}'.format(locale.currency(j['amount']), j['eloch']))
                 except Exception as e:
                     pass  # '{"result":"0","amount":4877810,"elo":2955,"eloch":1,"newmoney":5468422}'
                     # self.tgt.removetarget(hostname, ip)

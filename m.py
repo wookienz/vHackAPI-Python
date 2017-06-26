@@ -19,16 +19,13 @@ bot = Botnet(p)
 # 9 seconds to assign variables
 t = tasks.Tasks(p)
 
-logging.info("Player money: {0}".format(locale.currency(int(p.money))))
-logging.info("Player money: {0}".format(locale.format("%d", int(p.money), grouping=True)))
+logging.info("Player money: ${0}".format(locale.format("%d", int(p.money), grouping=True)))
 
 
 while True:
-    while True:
-        if t.filltaskqueue():
-            t.boosterplusnetcoins()
-        else:
-            break
+    p.saveIP('1.1.1.1', '')
+    if t.filltaskqueue():
+        t.boosterplusnetcoins()
     bot.attack()
     time.sleep(3)
 #    bot.upgradebotnet()

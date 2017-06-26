@@ -233,9 +233,10 @@ class Utils:
         else:
             return temp
 
-    def notepadIPs(self):
+    def getNotepadIPs(self):
         """
         Retrieve IPs save on the notepad.
+        '{"result":"1","pad":"252.109.141.53\\n162.205.188.116\\n238.203.22.74"}'
         :return: list
         """
         uhash = self.gethash()
@@ -246,6 +247,20 @@ class Utils:
         ips = j['pad'].split('\n')
         logging.info("Saved IPs from Notepad: {0}".format(ips))
         return ips
+
+    def saveNotepadIPs(self, ip, description):
+        """
+        Given an ip string, save to notepad file
+        temp: '2' ?
+        :param ip:
+        :param comment:
+        :return:
+        """
+        uhash = self.gethash()
+        temp = self.requestString("user::::pass::::uhash::::ip::::description",
+                                  self.username + "::::" + self.password + "::::" +
+                                  str(uhash) + "::::" + ip + "::::" + description, "vh_addNotepadIP.php")
+        return temp
 
     def SpywareInfo(self):
         """
