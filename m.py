@@ -7,8 +7,9 @@ import locale
 import time
 # 8seconds to import
 import tasks
-import package
+from package import Package
 from missions import Missions
+from cluster import Cluster
 
 locale.setlocale(locale.LC_ALL, '')
 logging.basicConfig(filename='vhack.log', level=logging.INFO)
@@ -20,8 +21,9 @@ p = Player()
 bot = Botnet(p)
 # 9 seconds to assign variables
 t = tasks.Tasks(p)
-package = package.Package()
+package = Package(p)
 mission = Missions()
+cluster = Cluster(p)
 
 logging.info("Player money: ${0}".format(locale.format("%d", int(p.money), grouping=True)))
 

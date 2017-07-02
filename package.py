@@ -9,9 +9,9 @@ class Package:
     p = Player()
     ut = utils.Utils()
 
-    def __init__(self):
-        self.username = p.username
-        self.password = p.password
+    def __init__(self, obj):
+        self.username = obj.username
+        self.password = obj.password
 
     def openallpackages(self):
         """

@@ -1,11 +1,13 @@
 import logging
 import utils
-from player import Player
 
 class Missions:
 
-    def __init__(self):
-        pass
+    ut = utils.Utils()
+
+    def __init__(self, obj):
+        self.username = obj.username
+        self.password = obj.password
 
     def collectall(self):
         """
