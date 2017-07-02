@@ -312,3 +312,14 @@ class Utils:
                                  "vh_finishTask.php")
         logging.info("Finished task: {0}".format(id))
         return temp
+
+    def getclusterdata(self):
+        """
+        Return all data about your cluster
+        :return: 
+        """
+        hash = self.gethash()
+        temp = self.requestString("user::::pass::::uhash",
+                                  self.username + "::::" + self.password + "::::" + str(hash),
+                              "vh_ClusterData.php")
+        return temp

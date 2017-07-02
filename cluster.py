@@ -1,11 +1,10 @@
 import utils
+import logging
 
 class Cluster:
     ut = utils.Utils()
 
-    def __init__(self, obj):
-        self.username = obj.username
-        self.password = obj.password
+    def __init__(self):
         pass
 
     def getclusterddata(self):
@@ -13,7 +12,6 @@ class Cluster:
         Return json data with information about your cluster.
         :return: json
         """
-        userHash = self.ut.gethash()
-        r = self.ut.requestString("user::::pass::::uhash", self.username + "::::" + self.password + "::::" + userHash,
-                                  "vh_ClusterData.php")
-
+        r = self.ut.getclusterdata()
+        logging.debug("Your cluster has the following information: {0}".format(r))
+        return r

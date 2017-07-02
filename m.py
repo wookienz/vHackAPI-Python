@@ -23,7 +23,7 @@ bot = Botnet(p)
 t = tasks.Tasks(p)
 package = Package(p)
 mission = Missions()
-cluster = Cluster(p)
+cluster = Cluster()
 
 logging.info("Player money: ${0}".format(locale.format("%d", int(p.money), grouping=True)))
 
