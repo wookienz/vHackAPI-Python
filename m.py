@@ -7,6 +7,8 @@ import locale
 import time
 # 8seconds to import
 import tasks
+import package
+from missions import Missions
 
 locale.setlocale(locale.LC_ALL, '')
 logging.basicConfig(filename='vhack.log', level=logging.INFO)
@@ -18,6 +20,8 @@ p = Player()
 bot = Botnet(p)
 # 9 seconds to assign variables
 t = tasks.Tasks(p)
+package = package.Package()
+mission = Missions()
 
 logging.info("Player money: ${0}".format(locale.format("%d", int(p.money), grouping=True)))
 
@@ -27,9 +31,11 @@ while True:
     if t.filltaskqueue():
         t.boosterplusnetcoins()
     bot.attack()
+    package.openallpackages()
     time.sleep(3)
 #    bot.upgradebotnet()
     time.sleep(3)
+    a.localhostattack()
     a.attack()
     for i in p.savedIPs:
         a.attack(i)

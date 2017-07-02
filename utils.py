@@ -197,6 +197,7 @@ class Utils:
         "p1":6834,"p2":28181,"p3":14601,"p4":1559,"p5":52543,"p6":54969,"fw":347,"av":318,"spam":325,"sdk":283,
         "ipsp":296,"money":33210055,"savings":"0","anonymous":"NO","username":"153.98.35.119","winelo":0,"winchance":90,
         "spyware":"276","ipaddress":"153.98.35.119","cmember":"0"}'
+        :param ip: str - ip string
         :return:
         """
         uhash = self.gethash()

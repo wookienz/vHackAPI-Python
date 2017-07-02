@@ -26,6 +26,11 @@ class Console:
         self.anon_attack = config.anon
 
     def attack(self, ip=None):
+        """
+        
+        :param ip: 
+        :return: 
+        """
         logging.info("Attacking....")
         h = self.ut.gethash()
         if h:
@@ -43,7 +48,7 @@ class Console:
     def attackhostname(self, hostname):
         """
         Scan, get port, attack
-        :param hostname:
+        :param hostname: str - hostname
         :return:
         """
         uhash = self.ut.gethash()

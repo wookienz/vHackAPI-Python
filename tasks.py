@@ -165,8 +165,8 @@ class Tasks:
         Use boosters until a level, then finish with netcoins.
         :return:
         """
-        self.level = 40  # at what netcoin amount to just finish all with NC instead of more boosters.
-        netcoinstofinish = 41
+        self.level = 1000  # at what netcoin amount to just finish all with NC instead of more boosters.
+        netcoinstofinish = 1001
         while netcoinstofinish > self.level:
             logging.info("Netcoins completion still too high, using another booster")
             r = self.useBooster()

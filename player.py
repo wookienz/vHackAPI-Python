@@ -95,7 +95,7 @@ class Player:
 
     def loadIPs(self):
         """
-        Retrieve notepad ips and place into class variable.
+        Retrieve notepad ips as a list and place into class variable.
         NOTE: IPs on notepad through game must be clean. '1,2,3,4' only, not words. ie '1.2.3.4 300million'
         :return:
         """
