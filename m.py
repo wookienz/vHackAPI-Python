@@ -14,7 +14,8 @@ from cluster import Cluster
 locale.setlocale(locale.LC_ALL, '')
 logging.basicConfig(filename='vhack.log', level=logging.INFO)
 
-logging.info("...............Starting Up...............at time: {0}".format(time.time()))
+logging.info("...............Starting Up...............at time: {0}".format(time.strftime('%Y-%m-%d %H:%M:%S',
+                                                                                          time.localtime(time.time()))))
 
 a = Console()
 p = Player()
@@ -29,15 +30,16 @@ logging.info("Player money: ${0}".format(locale.format("%d", int(p.money), group
 
 
 while True:
-    p.saveIP('1.1.1.1', '')
-    if t.filltaskqueue():
-        t.boosterplusnetcoins()
-    bot.attack()
-    package.openallpackages()
-    time.sleep(3)
+    # p.saveIP('1.1.1.1', '')
+#    if t.filltaskqueue():
+#        t.boosterplusnetcoins()
+#    bot.attack()
+#    package.openallpackages()
+#    time.sleep(3)
 #    bot.upgradebotnet()
-    time.sleep(3)
+#    time.sleep(3)
     a.localhostattack()
     a.attack()
     for i in p.savedIPs:
         a.attack(i)
+

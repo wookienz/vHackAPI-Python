@@ -167,7 +167,7 @@ class Utils:
     def scantarget(self, uhash, hostname):
         """
         Given a hash and hostname, scan target to get ip and vuln
-        '{"hostname":"XT-VRAV7Z5.vHack.cc","ipaddress":"76.179.249.20","vuln":"1"}'
+        temp = '{"hostname":"XT-VRAV7Z5.vHack.cc","ipaddress":"76.179.249.20","vuln":"1"}'
         :param uhash:
         :param hostname: hostname of the target "X7-H41995C.vHack.cc"
         :return: tgt data

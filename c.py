@@ -153,7 +153,7 @@ class Console:
             return None
 
     def localhostattack(self):
-        self.attackhostname('127.0.0.1')
+        self.attack('127.0.0.1')
         self.p.refreshinfo()
         self.p.readmail()
 

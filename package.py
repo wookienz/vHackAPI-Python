@@ -24,7 +24,7 @@ class Package:
             return False
         else:
             j = json.loads(r)
-            logging.debug("Openned packages and received: {0}".format(j))
+            logging.debug("Opened packages and received: {0}".format(j))
             return j
 
     def buypackages(self, amount):

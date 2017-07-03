@@ -23,7 +23,7 @@ class Player:
         self.anon_attack = config.anon
         self.installedspyware = []
         self.nclevel = config.nclevel
-        self.init() # 10 secs
+        self.init()  # 10 secs
         self.taskpri = config.tasks
 
     def __repr__(self):
@@ -73,7 +73,7 @@ class Player:
         if self.localspyware != '':
             logging.info('spyware found, attempting to remove')
             self.removespy()
-        self.installedspyware = self.ut.SpywareInfo()# spyware installed on others
+        self.installedspyware = self.ut.SpywareInfo()  # spyware installed on others
 
     def attackspyware(self):
         pass

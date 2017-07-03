@@ -5,9 +5,8 @@ class Missions:
 
     ut = utils.Utils()
 
-    def __init__(self, obj):
-        self.username = obj.username
-        self.password = obj.password
+    def __init__(self):
+        pass
 
     def collectall(self):
         """

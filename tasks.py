@@ -69,16 +69,14 @@ class Tasks:
         < type 'list' >: ['local:0', 'data:[{av:392', 'fw:417', 'money:42793029', 'spam:467', 'user:ShittyGame',
                            'ip:23.93.18.103', 'next:now.}]', 'remote:1', 'result:0']
         """
-        arr = self.ut.requestArray("user::::pass::::uhash:::::",
-                              self.username + "::::" + self.password + "::::" + "UserHash_not_needed" + ":::::",
-                              "vh_spywareInfo.php")
-        return arr
+        r = self.ut.SpywareInfo()
+        j = json.loads(r)
+        return j
 
     def removeSpyware(self):
-        arr = self.ut.requestArray("user::::pass::::uhash:::::",
-                              self.username + "::::" + self.password + "::::" + "UserHash_not_needed" + ":::::",
-                              "vh_removeSpyware.php")
-        return arr
+        r = self.ut.removespyware()
+        j = json.loads(r)
+        return j
 
     def _getTaskID(self, tasks=None):
         """
