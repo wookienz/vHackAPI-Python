@@ -52,38 +52,30 @@ class Utils:
     def parse(self, string):
         return string[1:-1].replace("\"", "").split(",")
 
-    def parseMulti(self, string):
-        temp = string
-        temp = temp.replace("[", "").replace("]", "")
-        temp = temp[len(temp.split(":")[0]) + 1:-1]
-
-        arr = temp.split("},{")
-        n = []
-        for i1 in arr:
-            temp = i1
-            if not temp.startswith("{"):
-                temp = "{" + temp
-            if not temp.endswith("}"):
-                temp += "}"
-            n.append(self.parse(temp))
-        return n
-
     def requestString(self, form, data, php):
-        time.sleep(random.randint(1, 2))
+        """
+
+        :param form:
+        :param data:
+        :param php:
+        :return:
+        """
         r = None
         count = 0
         while r is None:
+            time.sleep(random.randint(2, 4))
             try:
                 r = urllib2.urlopen(self.generateURL(form, data, php))
                 t = r.read()
                 return t
             except Exception as err:
                 count += 1
-                logging.warn("network error, trying again. Count: {0}".format(count))
+                logging.warn("network error, trying again. Count: {0}, {1}".format(count, err))
                 time.sleep(count)
-                if count == 10:
+                if count == 5:
                     logging.warn("Network errors - Giving up. Dumping data: {0}, {1}, {2}".format(form, data, php))
-                    sys.exit()
+                    return False
+                    # sys.exit()
 
     def requestArray(self, form, data, php):
         temp = self.requestString(form, data, php)
@@ -136,8 +128,15 @@ class Utils:
 
     def myinfo(self):
         """
-        looks up and returns all data associated with player. Upgrades, moneym boosters, spyware active etc.
+        looks up and returns all data associated with player. Upgrades, money, boosters, spyware active etc.
         See player class for detailed description
+        {"id":"924198","money":"604772","ip":"83.58.131.20","inet":"10","hdd":"10","cpu":"10","ram":"14",
+        "fw":"2809","av":"10149","sdk":"3621","ipsp":"1230","spam":"1210","scan":"1859","adw":"1247","actadw":"",
+        "netcoins":"17498","energy":"1730206679","score":"80284","urmail":"1","active":"1","elo":"4959",
+        "clusterID":null,"position":null,"syslog":null,"lastcmsg":"0","rank":1561,"event":"2","bonus":"5",
+        "mystery":"1498440904","vipleft":"OFF","hash":"91ec5ed746dfedc0a750d896a4e615c4",
+        "uhash":"b5b7326652bb3d74d340a6c83812e799389b221f447c2353e30d138c231e63f7","use":"0",
+        "tournamentActive":"2","boost":"393","actspyware":"2","tos":"1","unreadmsg":"0"}
         :return: str
         """
         temp = self.requestString("user::::pass::::gcm::::uhash",
@@ -323,3 +322,15 @@ class Utils:
                                   self.username + "::::" + self.password + "::::" + str(hash),
                               "vh_ClusterData.php")
         return temp
+
+    def openallapckages(self):
+        """
+        r = '{u'adw': u'0', u'ipsp': u'0', u'scan': u'2', u'netcoins': u'300', u'fw': u'0', u'money': u'5491000',
+         u'spam': u'3', u'newcoins': u'19398', u'newmoney': u'17761772', u'pcs': u'0', u'av': u'0',
+        u'boost': u'1', u'sdk': u'5'}'
+        :return:
+        """
+        userHash = self.gethash()
+        r = self.requestString("user::::pass::::uhash", self.username + "::::" + self.password + "::::" + str(userHash),
+                               "vh_openAllBonus.php")
+        return r

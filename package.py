@@ -9,18 +9,20 @@ class Package:
     p = Player()
     ut = utils.Utils()
 
-    def __init__(self, obj):
-        self.username = obj.username
-        self.password = obj.password
+    def __init__(self):
+        pass
 
     def openallpackages(self):
         """
         Open all packages
+         r = int 1 for no packages
+         r = '{u'adw': u'0', u'ipsp': u'0', u'scan': u'2', u'netcoins': u'300', u'fw': u'0', u'money': u'5491000',
+         u'spam': u'3', u'newcoins': u'19398', u'newmoney': u'17761772', u'pcs': u'0', u'av': u'0',
+        u'boost': u'1', u'sdk': u'5'}'
         :return: json object containing winnings or False if no packages openned
         """
-        userHash = self.ut.gethash()
-        r = self.ut.requestString("user::::pass::::uhash", self.username + "::::" + self.password + "::::" + userHash, "vh_openAllBonus.php")
-        if r == "1":
+        r = self.ut.openallapckages()
+        if r == 1 or r == '1':
             return False
         else:
             j = json.loads(r)

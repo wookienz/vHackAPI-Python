@@ -5,17 +5,16 @@ from utils import Utils
 import config
 import json
 import logging
-
+from player import Player
 
 class Botnet:
     ut = Utils()
+    p = Player()
 
-    def __init__(self, player):
-        self.username = player.username
-        self.password = player.password
+    def __init__(self):
         self.botNetServers = config.botNetServers
         self.botnet = []
-        self.p = player
+
 
     def _initbot(self):
         """

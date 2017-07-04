@@ -2,7 +2,7 @@ import config
 from utils import Utils
 import json
 import logging
-
+import locale
 
 class Player:
     ut = Utils()
@@ -23,7 +23,7 @@ class Player:
         self.anon_attack = config.anon
         self.installedspyware = []
         self.nclevel = config.nclevel
-        self.init()  # 10 secs
+        # self.init()  # 10 secs
         self.taskpri = config.tasks
 
     def __repr__(self):
@@ -39,9 +39,13 @@ class Player:
         :return: None
         """
         self.money = amount
+        logging.info("Player money: ${0}".format(locale.format("%d", int(self.money), grouping=True)))
 
     def getmoney(self):
         return self.money
+
+    def addmoney(self, m):
+        self.money += m
 
     def removespy(self):
         response = self.ut.removespyware()
@@ -74,6 +78,7 @@ class Player:
             logging.info('spyware found, attempting to remove')
             self.removespy()
         self.installedspyware = self.ut.SpywareInfo()  # spyware installed on others
+
 
     def attackspyware(self):
         pass

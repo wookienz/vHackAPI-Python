@@ -4,7 +4,7 @@ from base64 import b64decode
 import time
 import pytesseract
 from PIL import Image
-from player import Player
+import player
 from target import targets
 from utils import Utils
 import logging
@@ -15,7 +15,7 @@ import logging
 
 class Console:
     ut = Utils()
-    p = Player()
+    p = player.Player()
     tgt = targets()
 
     def __repr__(self):
@@ -42,7 +42,7 @@ class Console:
                 # process list of 6 items. each containing 'hostname' and 'img' keys
                 results = self.processtargets(j['data'])
                 for i in results:
-                    time.sleep(3)
+                    time.sleep(2)
                     self.attackhostname(i['Hostname'])
 
     def attackhostname(self, hostname):
@@ -54,7 +54,7 @@ class Console:
         uhash = self.ut.gethash()
         logging.info('Attacking host {0}'.format(hostname))
         ip = self.hostnameToIP(uhash, hostname)
-        self.tgt.changevalue(hostname, ip=ip)
+        # self.tgt.changevalue(hostname, ip=ip)
         self.attackip(ip)
 
     def attackip(self, ip):
@@ -65,27 +65,28 @@ class Console:
         """
         logging.info('Attacking target with ip: {0}'.format(ip))
         uhash = self.ut.gethash()
-        time.sleep(2)
+        time.sleep(1)
         r = self.ut.connectToRemoteHost(ip)
-        time.sleep(2)
-        j = json.loads(r)
-        if self.attackdecision(j):
-            attackport = self.ut.findportnumber(r)
-            logging.info('Finding Attack Port {0}'.format(attackport))
-            time.sleep(2)
-            logging.info('Sending Trojan...')
-            result = self.ut.transferTrojan(attackport, ip, uhash)
-            if result:
-                j = json.loads(result)
-                if j['newmoney'] > 1000000000:
-                    pass
-                try:
-                    logging.info('managed to steal ${0}, Rep gained: {1}'.format(locale.currency(j['amount']), j['eloch']))
-                except Exception as e:
-                    pass  # '{"result":"0","amount":4877810,"elo":2955,"eloch":1,"newmoney":5468422}'
-                    # self.tgt.removetarget(hostname, ip)
-            else:
-                logging.info('IP cant be attacket yet, timer active')
+        if r is not False:
+            j = json.loads(r)
+            if self.attackdecision(j):
+                attackport = self.ut.findportnumber(r)
+                logging.info('Finding Attack Port {0}'.format(attackport))
+                time.sleep(1)
+                logging.info('Sending Trojan...')
+                result = self.ut.transferTrojan(attackport, ip, uhash)
+                if result:
+                    j = json.loads(result)
+                    if j['newmoney'] > 1000000000:
+                        pass
+                    try:
+                        logging.info('managed to steal {0}, Rep gained: {1}'.format(locale.currency(j['amount']),
+                                                                                    j['eloch']))
+                    except Exception as e:
+                        pass  # '{"result":"0","amount":4877810,"elo":2955,"eloch":1,"newmoney":5468422}'
+                        # self.tgt.removetarget(hostname, ip)
+                else:
+                    logging.info('IP cant be attacket yet, timer active')
 
 
     def attackdecision(self, data):

@@ -1,6 +1,9 @@
 import logging
 logging.basicConfig(filename='vhack.log', level=logging.DEBUG)
-from player import Player
+
+import time
+logging.debug(time.time())
+import player
 from c import Console
 from botnet import Botnet
 import locale
@@ -16,30 +19,27 @@ logging.basicConfig(filename='vhack.log', level=logging.INFO)
 
 logging.info("...............Starting Up...............at time: {0}".format(time.strftime('%Y-%m-%d %H:%M:%S',
                                                                                           time.localtime(time.time()))))
-
 a = Console()
-p = Player()
-bot = Botnet(p)
-# 9 seconds to assign variables
+p = player.Player()
+bot = Botnet()
 t = tasks.Tasks(p)
-package = Package(p)
+package = Package()
 mission = Missions()
 cluster = Cluster()
 
-logging.info("Player money: ${0}".format(locale.format("%d", int(p.money), grouping=True)))
-
 
 while True:
+    p.init()
     # p.saveIP('1.1.1.1', '')
-#    if t.filltaskqueue():
-#        t.boosterplusnetcoins()
-#    bot.attack()
-#    package.openallpackages()
-#    time.sleep(3)
-#    bot.upgradebotnet()
-#    time.sleep(3)
-    a.localhostattack()
-    a.attack()
-    for i in p.savedIPs:
-        a.attack(i)
+    if t.filltaskqueue():
+        t.boosterplusnetcoins()
+    #bot.attack()
+    #package.openallpackages()
+    # time.sleep(3)
+    #bot.upgradebotnet()
+    # time.sleep(3)
+    #a.localhostattack()
+    #a.attack()
+    #for i in p.savedIPs:
+    #    a.attack(i)
 

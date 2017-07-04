@@ -163,8 +163,8 @@ class Tasks:
         Use boosters until a level, then finish with netcoins.
         :return:
         """
-        self.level = 1000  # at what netcoin amount to just finish all with NC instead of more boosters.
-        netcoinstofinish = 1001
+        self.level = 1300  # at what netcoin amount to just finish all with NC instead of more boosters.
+        netcoinstofinish = 1301
         while netcoinstofinish > self.level:
             logging.info("Netcoins completion still too high, using another booster")
             r = self.useBooster()
@@ -207,9 +207,9 @@ class Tasks:
             upgrade = self.taskpriority[0]
         while self.runningtasks < int(self.ram):
             result = self.startTask(upgrade)
-            logging.info("Starting task upgrade of type: {0}".format(upgrade))
             if not result: # False returned, either full queue or no money
                 return False
+            logging.info("Starting task upgrade of type: {0}".format(upgrade))
         return True
 
 
