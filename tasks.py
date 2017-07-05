@@ -177,7 +177,10 @@ class Tasks:
                 logging.info("No tasks left to use netcoins on")
                 self.runningtasks = 0
                 return
-        self.finishAll()
+        if self.finishAll():
+            logging.debug('Used netcoins to finish tasks')
+        else:
+            logging.debug('Not enough netcoins')
 
     def useBooster(self):
         """

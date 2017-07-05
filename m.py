@@ -33,13 +33,13 @@ while True:
     # p.saveIP('1.1.1.1', '')
     if t.filltaskqueue():
         t.boosterplusnetcoins()
-    #bot.attack()
-    #package.openallpackages()
+    bot.attack()
+    package.openallpackages()
     # time.sleep(3)
-    #bot.upgradebotnet()
+    bot.upgradebotnet()
     # time.sleep(3)
-    #a.localhostattack()
-    #a.attack()
-    #for i in p.savedIPs:
-    #    a.attack(i)
+    a.localhostattack()
+    a.attack()
+    for i in p.savedIPs:
+        a.attack(i)
 

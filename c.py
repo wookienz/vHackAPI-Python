@@ -78,7 +78,7 @@ class Console:
                 if result:
                     j = json.loads(result)
                     if j['newmoney'] > 1000000000:
-                        pass
+                        self.p.saveIP(ip, '')
                     try:
                         logging.info('managed to steal {0}, Rep gained: {1}'.format(locale.currency(j['amount']),
                                                                                     j['eloch']))
@@ -148,6 +148,10 @@ class Console:
         temp = self.ut.scantarget(h, hostname)
         try:
             j = json.loads(temp)
+            try:
+                i = j['ipaddress']
+            except TypeError:
+                logging.debug(h, hostname, temp)
             return j['ipaddress']
         except ValueError as e:
             print "Error getting value in scantargets function: {0}".format(e)
