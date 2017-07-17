@@ -124,3 +124,13 @@ class Player:
         pass
     # vh_removeNotepadIP.php          "ipid"
 
+    def register(self,user,pw, email):
+        """
+
+        :param user:
+        :param pw:
+        :return:
+        """
+        r = self.ut.requestString(user, pw, email)
+        j = json.loads(r)
+        logging.debug("New account registered with detaails: {0}, {1}, {2}".format(user, pw, email))

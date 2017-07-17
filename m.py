@@ -1,7 +1,9 @@
 import logging
+
 logging.basicConfig(filename='vhack.log', level=logging.DEBUG)
 
 import time
+
 logging.debug(time.time())
 import player
 from c import Console
@@ -27,19 +29,21 @@ package = Package()
 mission = Missions()
 cluster = Cluster()
 
-
 while True:
     p.init()
-    # p.saveIP('1.1.1.1', '')
+    # p.saveIP('1.1.1.1', '')`
+    """
     if t.filltaskqueue():
         t.boosterplusnetcoins()
+    """
     bot.attack()
     package.openallpackages()
     # time.sleep(3)
     bot.upgradebotnet()
     # time.sleep(3)
     a.localhostattack()
+    """
     a.attack()
-    for i in p.savedIPs:
-        a.attack(i)
-
+    # for i in p.savedIPs:
+    #    a.attack(i)
+    """

@@ -145,6 +145,9 @@ class Utils:
         if len(temp) is 1:
             logging.error("Are Username and Password correct?")
             sys.exit()
+        elif temp == 15:
+            logging.error("Are you banned?")
+            sys.exit()
         return temp
 
     def removespyware(self):
@@ -230,7 +233,11 @@ class Utils:
         if 'time' in temp:
             logging.info("{0} under protection: {1}".format(str(target), temp))
             return False
+        elif type(temp) is int:
+            logging.debug("Transfer trojan failed, int returned: {0}".format(temp))
+            return False
         else:
+            logging.info("testing {0}".format(temp))
             return temp
 
     def getNotepadIPs(self):
@@ -333,4 +340,17 @@ class Utils:
         userHash = self.gethash()
         r = self.requestString("user::::pass::::uhash", self.username + "::::" + self.password + "::::" + str(userHash),
                                "vh_openAllBonus.php")
+        return r
+
+    def registernewplayer(self, u, p, e):
+        """
+        "user1, pass2, mail"
+        :param u:
+        :param p:
+        :param e:
+        :return:
+        """
+        userHash = self.gethash()
+        r = self.requestString("user1::::pass2::::uhash::::email", u + "::::" + p + "::::" + str(userHash),
+                               "vh_register.php")
         return r

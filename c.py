@@ -77,7 +77,9 @@ class Console:
                 result = self.ut.transferTrojan(attackport, ip, uhash)
                 if result:
                     j = json.loads(result)
+                    print j
                     if j['newmoney'] > 1000000000:
+                        pass
                         self.p.saveIP(ip, '')
                     try:
                         logging.info('managed to steal {0}, Rep gained: {1}'.format(locale.currency(j['amount']),
@@ -148,12 +150,12 @@ class Console:
         temp = self.ut.scantarget(h, hostname)
         try:
             j = json.loads(temp)
-            try:
-                i = j['ipaddress']
-            except TypeError:
+            if j is 1:
                 logging.debug(h, hostname, temp)
-            return j['ipaddress']
-        except ValueError as e:
+                return '127.0.0.1'
+            else:
+                return j['ipaddress']
+        except ValueError or TypeError as e:
             print "Error getting value in scantargets function: {0}".format(e)
             return None
 
