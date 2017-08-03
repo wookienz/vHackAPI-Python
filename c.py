@@ -77,7 +77,6 @@ class Console:
                 result = self.ut.transferTrojan(attackport, ip, uhash)
                 if result:
                     j = json.loads(result)
-                    print j
                     if j['newmoney'] > 1000000000:
                         pass
                         self.p.saveIP(ip, '')
