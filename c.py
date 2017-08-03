@@ -70,11 +70,11 @@ class Console:
         if r is not False:
             j = json.loads(r)
             if self.attackdecision(j):
-                attackport = self.ut.findportnumber(r)
-                logging.info('Finding Attack Port {0}'.format(attackport))
-                time.sleep(1)
+                #attackport = self.ut.findportnumber(r)
+                #logging.info('Finding Attack Port {0}'.format(attackport))
+                #time.sleep(1)
                 logging.info('Sending Trojan...')
-                result = self.ut.transferTrojan(attackport, ip, uhash)
+                result = self.ut.transferTrojan(ip, uhash)
                 if result:
                     j = json.loads(result)
                     if j['newmoney'] > 1000000000:
@@ -129,7 +129,7 @@ class Console:
 
     def decodeimages(self, i):
         """
-        Take base64 code, decode it, file into a buffer insterad of save it, open buffer with PIL. Decode with pytess.
+        Take base64 code, decode it, file into a buffer instead of save it, open buffer with PIL. Decode with pytess.
         :param i: item of list, keys: hostname and img
         :return: string 'Hostname:\nXT7H41995C.vHack.cc\nFirewall: 241'
         """

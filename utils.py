@@ -2,7 +2,6 @@
 # -*- coding: utf-8
 import sys
 import json
-import ocr
 import config
 import base64
 import hashlib
@@ -208,16 +207,18 @@ class Utils:
                                       uhash) + "::::" + ip, "vh_loadRemoteData.php")
         return temp
 
+    """
     def findportnumber(self, img):
-        """
+        
         Given an image or the port number, covert to str.
         :param img: base64 image
         :return: str
-        """
+        
         o = ocr.OCR()
         return o.getSolution(img)
+    """
 
-    def transferTrojan(self, passwd, target, uhash):
+    def transferTrojan(self, target, uhash):
         """
 
         :param passwd:
@@ -226,9 +227,8 @@ class Utils:
         :return:
          '{"result":"0","amount":4877810,"elo":2955,"eloch":1,"newmoney":5468422}'
         """
-        temp = self.requestString("user::::pass::::port::::target::::uhash",
-                                  self.username + "::::" + self.password + "::::" + str(
-                                      passwd[1]) + "::::" + str(target) + "::::" + str(uhash),
+        temp = self.requestString("user::::pass::::target::::uhash",
+                                  self.username + "::::" + self.password + "::::" + str(target) + "::::" + str(uhash),
                                   "vh_trTransfer.php")
         if 'time' in temp:
             logging.info("{0} under protection: {1}".format(str(target), temp))

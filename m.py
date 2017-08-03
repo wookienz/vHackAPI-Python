@@ -35,7 +35,7 @@ while True:
     """
     if t.filltaskqueue():
         t.boosterplusnetcoins()
-    """
+    
     bot.attack()
     package.openallpackages()
     # time.sleep(3)
@@ -46,4 +46,3 @@ while True:
     a.attack()
     # for i in p.savedIPs:
     #    a.attack(i)
-    """
